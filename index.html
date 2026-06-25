@@ -21,7 +21,7 @@
           <a href="https://github.com/lcaraffa">github</a> ·
           <a href="https://scholar.google.com/scholar?q=Laurent+Caraffa">scholar</a> ·
           <a href="https://x.com/LCaraffa">twitter</a> ·
-          <a href="mailto:caraffa.laurent@gmail.com">email</a>
+          <a id="email-link" href="#">email</a>
         </nav>
       </div>
       <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
@@ -51,5 +51,13 @@
   <script src="notes.js"></script>
   <script src="publications.js"></script>
   <script src="theme.js"></script>
+  <script>
+    // obfuscate email to deter spam harvesters
+    (function () {
+      var u = 'laurent.caraffa', d = 'ign.fr';
+      var a = document.getElementById('email-link');
+      a.href = 'mailto:' + u + '@' + d;
+    })();
+  </script>
 </body>
 </html>
