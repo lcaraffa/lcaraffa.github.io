@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graduated Non-Convexity for Robust Fitting — Laurent Caraffa</title>
+  <meta name="description" content="A note on the graduated non-convexity (GNC) approach for robust fitting under non-Gaussian noise and outliers.">
+  <meta name="theme-color" content="#11131a">
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="../note.css">
+  <script defer src="../vendor/katex/katex.min.js"></script>
+  <script defer src="../katex-render.js"></script>
+  <script defer src="../theme.js"></script>
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
+
+  <main>
+    <p class="back"><a href="../../#notes"><span class="prompt">~/</span>notes</a></p>
+
+    <header class="page-head">
+      <h1>Graduated Non-Convexity for Robust Fitting</h1>
+      <p class="lead">Reaching a useful minimum of a non-convex robust estimator, one step at a time.</p>
+      <p class="meta">2014 · optimization<span class="tag">robust</span><span class="tag">GNC</span></p>
+    </header>
+
+    <figure>
+      <img src="assets/newtongnc.gif" alt="graduated non-convexity estimating the mean, with a Newton step at each level">
+      <figcaption>Estimating the mean by graduated non-convexity, with a Newton step minimizing the energy at each
+        level. Green points are draws from a normal distribution (the vertical line is the true mean), red crosses
+        are outliers, and the blue curve is the normalized cost. The algorithm starts from a convex estimator (the
+        normal) and, step by step, sharpens toward a more robust one; the black dot is the current estimate.</figcaption>
+    </figure>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>Many problems have a non-convex energy, so reaching the global minimum in finite time is not guaranteed.
+        Non-convex functions are common in <em>robust estimation</em> — estimating variables under non-Gaussian
+        noise. Graduated non-convexity (GNC) is a generic way to reach an interesting minimum when a robust
+        estimator is needed.</p>
+    </section>
+
+    <section>
+      <h2>Generic approach for robust linear fitting</h2>
+      <p>For many problems we seek the model parameters <span data-tex="\phi"></span> of a probability function that
+        maximize it over paired training examples <span data-tex="y_i"></span> and <span data-tex="x_i"></span>:</p>
+      <div class="formula" data-tex="\underset{\phi}{\operatorname{argmax}}\;\big[\, \Pr(y_i \mid x_i, \phi) \,\big]" data-display="1"></div>
+      <p>where <span data-tex="y_i"></span> is linearly related to <span data-tex="x_i"></span> through
+        <span data-tex="\phi"></span>:</p>
+      <div class="formula" data-tex="y_i = \phi\, x_i + \epsilon" data-display="1"></div>
+      <p><span data-tex="\epsilon"></span> is the perturbation from the noise distribution. Assuming Gaussian noise
+        gives the familiar least-squares problem (the negative log of the pdf) — but that is very sensitive to
+        outliers. The fix is to use a robust estimator instead of the normal distribution.</p>
+    </section>
+
+    <section>
+      <h2>Graduated non-convexity approach</h2>
+      <p>A robust estimator's cost is usually non-convex, so the global minimum cannot be computed in finite time.
+        To reach a useful local minimum, GNC starts from a convex estimator (the normal, say) and gradually
+        reshapes the cost function until it becomes a robust enough estimator to fit the target distribution as
+        well as possible.</p>
+    </section>
+
+    <section>
+      <h2>Example — robust polynomial and conic estimation</h2>
+      <p>Polynomial coefficient estimation by graduated non-convexity. Blue lines are the iterated steps, green is
+        the ground truth. Points are coloured by the derivative of the current estimator's cost — red: near one,
+        blue: near zero. Red points are constraints added with a Lagrange multiplier.</p>
+      <figure class="row">
+        <img src="assets/gnc10.gif" alt="GNC polynomial fit, example 1">
+        <img src="assets/gnc3.gif" alt="GNC polynomial fit, example 2">
+        <img src="assets/gnc6.gif" alt="GNC polynomial fit, example 3">
+      </figure>
+      <p>The conic equation can be written as an explicit least-squares form, so it can be optimized the same way:</p>
+      <figure class="row">
+        <img src="assets/gnc-ellipse.gif" alt="GNC ellipse fit, example 1">
+        <img src="assets/gnc-ellipse2.gif" alt="GNC ellipse fit, example 2">
+      </figure>
+    </section>
+
+    <footer>
+      <p><a href="../../"><span class="prompt">~/</span>Laurent Caraffa</a> · <span id="year"></span></p>
+    </footer>
+  </main>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

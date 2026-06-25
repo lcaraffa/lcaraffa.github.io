@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laurent Caraffa</title>
+  <meta name="description" content="Laurent Caraffa — projects.">
+  <meta name="theme-color" content="#11131a">
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <img class="avatar" src="assets/avatar.jpg" alt="Laurent Caraffa" width="60" height="60">
+      <div class="id">
+        <h1>Laurent Caraffa <span class="sub">— personal page</span></h1>
+        <p class="role">Computer science researcher at <a href="https://www.umr-lastig.fr/">LaSTIG</a></p>
+        <p class="interests">interested in: Machine learning — Signal Processing — Out-of-core Processing — SIG — Emacs</p>
+        <nav class="links">
+          <a href="https://github.com/lcaraffa">github</a> ·
+          <a href="https://scholar.google.com/scholar?q=Laurent+Caraffa">scholar</a> ·
+          <a href="https://x.com/LCaraffa">twitter</a> ·
+          <a href="mailto:caraffa.laurent@gmail.com">email</a>
+        </nav>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
+    </header>
+
+    <section>
+      <h2 class="section-label">projects</h2>
+      <ul id="project-list" class="projects"><!-- rempli par projects.js --></ul>
+    </section>
+
+    <section>
+      <h2 class="section-label">selected publications</h2>
+      <div id="publication-list"><!-- rempli par publications.js --></div>
+    </section>
+
+    <section id="notes">
+      <h2 class="section-label">notes</h2>
+      <ul id="note-list" class="projects"><!-- rempli par notes.js --></ul>
+    </section>
+
+    <footer>
+      <p>Laurent Caraffa · <span id="year"></span></p>
+    </footer>
+  </main>
+
+  <script src="projects.js"></script>
+  <script src="notes.js"></script>
+  <script src="publications.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>

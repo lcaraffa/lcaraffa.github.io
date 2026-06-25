@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sparkling Wasure — Laurent Caraffa</title>
+  <meta name="description" content="Sparkling Wasure — out-of-core watertight surface reconstruction from LiDAR point clouds with Apache Spark.">
+  <meta name="theme-color" content="#11131a">
+  <link rel="icon" href="../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="theme.js"></script>
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
+
+  <main>
+    <p class="back"><a href="../"><span class="prompt">~/</span>projects</a></p>
+
+    <header class="page-head">
+      <h1>Sparkling Wasure</h1>
+      <p class="tagline">Out-of-core watertight surface reconstruction from LiDAR point clouds with Apache Spark.</p>
+      <p class="authors">
+        <a href="https://www.umr-lastig.fr/laurent-caraffa/">Laurent Caraffa</a>,
+        <a href="https://www.umr-lastig.fr/yanis-marchand/">Yanis Marchand</a>,
+        <a href="https://www.umr-lastig.fr/mathieu-bredif/">Mathieu Brédif</a>,
+        <a href="https://www.umr-lastig.fr/bruno-vallet/">Bruno Vallet</a>
+      </p>
+      <p class="venue">International Conference on 3D Vision (3DV) · 2021 · LASTIG, IGN</p>
+      <p class="links">
+        <a href="https://hal.archives-ouvertes.fr/hal-03380593/file/2021216131.pdf">paper (pdf)</a> ·
+        <a href="https://github.com/lcaraffa/sparkling-wasure">code</a> ·
+        <a href="https://geoservices.ign.fr/lidarhd">dataset</a>
+      </p>
+    </header>
+
+    <figure class="hero-fig">
+      <img src="assets/header.jpg"
+           alt="Watertight reconstruction of a Château de Versailles LiDAR HD tile collection: distributed tiles, an elevation-shaded mesh, and the georeferenced 3D-Tiles result on a map.">
+      <figcaption>Watertight reconstruction of a Château de Versailles LiDAR HD tile collection —
+        the distributed tiles, the elevation-shaded mesh, and the georeferenced 3D-Tiles result on a map.</figcaption>
+    </figure>
+
+    <section>
+      <h2>Abstract</h2>
+      <p>We present an out-of-core and distributed surface reconstruction algorithm which scales
+        efficiently on arbitrarily large point clouds (with optical centres) and produces a 3D
+        watertight triangle mesh representing the surface of the underlying scene. Surface
+        reconstruction from a point cloud is a difficult problem and existing state of the art
+        approaches are usually based on complex pipelines making use of global algorithms
+        (i.e. Delaunay triangulation, graph-cut optimisation). For one of these approaches, we
+        investigate the distribution of all the steps (in particular Delaunay triangulation and
+        graph-cut optimisation) in order to propose a fully scalable method. We show that the
+        problem can be tiled and distributed across a cloud or a cluster of PCs by paying a
+        careful attention to the interactions between tiles and using the Spark computing
+        framework. We confirm the efficiency of this approach with an in-depth quantitative
+        evaluation and the successful reconstruction of a surface from a very large data set
+        which combines more than 350 million aerial and terrestrial LiDAR points.</p>
+    </section>
+
+    <section>
+      <h2>Code</h2>
+      <p><strong>Sparkling Wasure</strong> is a simplified version of the method, fine-tuned for the
+        <a href="https://geoservices.ign.fr/lidarhd">LiDAR HD dataset</a> to run on a single computer.
+        It produces a georeferenced mesh with levels of detail in
+        <a href="https://github.com/CesiumGS/3d-tiles">3D Tiles</a> format, directly viewable in
+        <a href="https://github.com/iTowns/itowns">iTowns</a> or Cesium.</p>
+      <p><a href="https://github.com/lcaraffa/sparkling-wasure">github.com/lcaraffa/sparkling-wasure</a></p>
+      <p class="muted">GNU GPL v3 · experimental / research code · Docker · 8 GB RAM · no GPU.</p>
+    </section>
+
+    <section>
+      <h2>News</h2>
+      <ul class="news">
+        <li>2021-12-10 — Project page online.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>References</h2>
+
+      <pre class="bibtex"><button class="copy" type="button" aria-label="copy bibtex">copy</button><code>@inproceedings{caraffa:hal-03380593,
+  TITLE     = {Efficiently Distributed Watertight Surface Reconstruction},
+  AUTHOR    = {CARAFFA, Laurent and Marchand, Yanis and Br{\'e}dif, Mathieu and Vallet, Bruno},
+  URL       = {https://hal.archives-ouvertes.fr/hal-03380593},
+  BOOKTITLE = {2021 International Conference on 3D Vision (3DV)},
+  ADDRESS   = {London, United Kingdom},
+  YEAR      = {2021},
+  MONTH     = Dec,
+}</code></pre>
+
+      <pre class="bibtex"><button class="copy" type="button" aria-label="copy bibtex">copy</button><code>@inproceedings{caraffa:hal-02535021,
+  TITLE     = {Tile &amp; Merge: Distributed Delaunay Triangulations for Cloud Computing},
+  AUTHOR    = {CARAFFA, Laurent and Memari, Pooran and Yirci, Murat and Br{\'e}dif, Mathieu},
+  URL       = {https://hal.archives-ouvertes.fr/hal-02535021},
+  BOOKTITLE = {IEEE Big Data 2019},
+  ADDRESS   = {Los Angeles, United States},
+  YEAR      = {2019},
+  MONTH     = Dec,
+  DOI       = {10.1109/BigData47090.2019.9006534},
+}</code></pre>
+    </section>
+
+    <footer>
+      <p><a href="../"><span class="prompt">~/</span>Laurent Caraffa</a> · <span id="year"></span></p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.querySelectorAll(".copy").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const code = btn.parentElement.querySelector("code").textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = "copied";
+          setTimeout(() => (btn.textContent = prev), 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

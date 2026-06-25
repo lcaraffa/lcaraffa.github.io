@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quadratic Pseudo-Boolean Optimization — Laurent Caraffa</title>
+  <meta name="description" content="An introduction to quadratic pseudo-Boolean optimization: submodularity and graph cuts, non-submodularity and roof duality.">
+  <meta name="theme-color" content="#11131a">
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="../note.css">
+  <script defer src="../vendor/katex/katex.min.js"></script>
+  <script defer src="../katex-render.js"></script>
+  <script defer src="../theme.js"></script>
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
+
+  <main>
+    <p class="back"><a href="../../#notes"><span class="prompt">~/</span>notes</a></p>
+
+    <header class="page-head">
+      <h1>Quadratic Pseudo-Boolean Optimization</h1>
+      <p class="lead">An introduction — submodularity &amp; graph cuts, non-submodularity &amp; roof duality.</p>
+      <p class="meta">2014 · optimization<span class="tag">QPBO</span><span class="tag">graph-cut</span></p>
+    </header>
+
+    <p>Graph-based algorithms have been used for decades across many optimization applications, with very good
+      results. First used empirically in image processing, graph-based methods there turned out to be a reduction
+      of pseudo-Boolean function optimization in the binary case. Many of the field's properties and algorithms
+      have in turn improved the state of the art in image processing.</p>
+
+    <section>
+      <h2>Pseudo-Boolean function</h2>
+      <p>A pseudo-Boolean function has the following form:</p>
+      <div class="formula" data-tex="f(x_1,\dots,x_n) = a_0 + \sum_{i=1}^n a_i x_i + \sum_{1\le i \le j \le n} a_{ij}\,x_i x_j + \sum_{1\le i \le j \le k \le n} a_{ijk}\,x_i x_j x_k + \cdots" data-display="1"></div>
+      <p>where the <span data-tex="x_n"></span> are Boolean variables and the <span data-tex="a_i"></span> are reals.
+        By introducing the complement <span data-tex="\bar{x}"></span>, it can be rewritten with only positive
+        coefficients — the <em>posiform</em>, the form that is generally minimized.</p>
+    </section>
+
+    <section>
+      <h2>Optimizing a sub-modular function</h2>
+      <p>A special case is when the function is <em>sub-modular</em> (closely related to convexity in the
+        continuous case): the global minimum can then be reached in polynomial time. Every pseudo-Boolean function
+        reduces to a <em>quadratic</em> one (at most two variables per term), and when the quadratic form is
+        sub-modular, the global minimum is a graph cut.</p>
+      <p>For example, minimizing the sub-modular function
+        <span data-tex="\phi(\mathbf{x}) = \overline{x}_1 + 6x_1 + 4\overline{x}_2 + x_2 + 2x_1\overline{x}_2"></span>
+        is the same as finding the minimum cut of the graph:</p>
+      <figure class="row">
+        <img src="assets/mincut.svg" alt="graph whose minimum cut encodes the pseudo-Boolean function">
+        <img src="assets/tt1.gif" alt="truth table of the cut costs">
+      </figure>
+      <figcaption><span data-tex="s"></span> is the source, <span data-tex="t"></span> the sink. A cut of the edge
+        <span data-tex="s\!\to\!x_i"></span> sets <span data-tex="x_i=0"></span>; cutting <span data-tex="x_i\!\to\!t"></span>
+        sets <span data-tex="x_i=1"></span> (a cut counts only when its tail is on the source side and its head on
+        the sink side). The summed cut weight equals the cost of the function for that assignment — see the truth
+        table. Here the minimum cut is <span data-tex="c_2"></span> with
+        <span data-tex="x_1=0,\ x_2=1"></span>, matching <span data-tex="\phi(\{1,0\}) = 2"></span>.</figcaption>
+    </section>
+
+    <section>
+      <h2>Optimizing a non-sub-modular function</h2>
+      <p>When a pseudo-Boolean function is not sub-modular (or cannot be identified as such), the global minimum is
+        no longer reachable in polynomial time. However, a <em>subset</em> of labels guaranteed to belong to the
+        global minimum still can be.</p>
+      <p>A quadratic pseudo-Boolean function can be rewritten with a largest possible constant term; that maximal
+        form is the <em>roof duality</em>. Once it is reached, the assignment making the linear terms vanish is part
+        of the global minimum, and a max-flow computation yields it.</p>
+      <p>The function
+        <span data-tex="\phi(\mathbf{x}) = 10x_1 + 8\overline{x}_1 x_2 + 6\overline{x}_2 x_3 + 4\overline{x}_3"></span>
+        can be transformed, with the same truth table, by extracting the constant term <span data-tex="4"></span>:
+        <span data-tex="\phi(\mathbf{x}) = 4 + 6x_1 + 4x_1\overline{x}_2 + 4\overline{x}_1 x_2 + 2\overline{x}_2 x_3 + 4x_2\overline{x}_3"></span>.
+        This is done with a max-flow approach:</p>
+      <figure class="row">
+        <img src="assets/maxflow.svg" alt="max-flow graph for the roof duality">
+        <img src="assets/maxflow-res.svg" alt="residual graph revealing strongly persistent variables">
+      </figure>
+      <figcaption>The max flow of the graph equals the constant term. Once the roof duality is reached, the
+        variables common to every global minimum (<em>strongly persistent</em>) are read off the residual graph: a
+        node reachable from the source is fixed to <span data-tex="0"></span> if it is a complement, else
+        <span data-tex="1"></span>. Here <span data-tex="\{0,0,0\}"></span> is strongly persistent and minimizes the
+        function globally, since <span data-tex="\phi(\{0,0,0\}) = 4"></span>.</figcaption>
+    </section>
+
+    <section>
+      <h2>References</h2>
+      <p class="ref">Endre Boros and Peter L. Hammer. <em>Pseudo-Boolean optimization.</em> Discrete Applied
+        Mathematics 123 (1–3), 155–225, 2002.
+        <a href="https://doi.org/10.1016/S0166-218X(01)00341-9">doi:10.1016/S0166-218X(01)00341-9</a></p>
+    </section>
+
+    <footer>
+      <p><a href="../../"><span class="prompt">~/</span>Laurent Caraffa</a> · <span id="year"></span></p>
+    </footer>
+  </main>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

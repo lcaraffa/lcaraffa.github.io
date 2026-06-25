@@ -1,0 +1,11 @@
+# OS / éditeur
+.DS_Store
+Thumbs.db
+*~
+.#*
+\#*\#
+.idea/
+.vscode/
+
+# logs / divers
+*.log

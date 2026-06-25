@@ -1,0 +1,99 @@
+/* note.css — shared style for the expository notes (QPBO, GNC, …).
+   Same lightweight monospace look as the rest of the site; figures sit on a
+   light tile in both themes (like the project figures). */
+
+:root {
+  --bg: #fdfdfb; --fg: #1a1a1a; --muted: #6a6a6a;
+  --accent: #b5121b; --line: #e2e2dd; --code-bg: #f4f4f0;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "IBM Plex Mono",
+          Menlo, Consolas, monospace;
+}
+:root[data-theme="dark"] {
+  --bg: #11131a; --fg: #d6d6d0; --muted: #7e8696;
+  --accent: #ff5f6d; --line: #232631; --code-bg: #171a22;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --bg: #11131a; --fg: #d6d6d0; --muted: #7e8696;
+    --accent: #ff5f6d; --line: #232631; --code-bg: #171a22;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body {
+  margin: 0; color: var(--fg);
+  font-family: var(--mono); font-size: 15px; line-height: 1.65;
+}
+main { max-width: 52rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+
+a {
+  color: var(--fg); text-decoration: underline;
+  text-decoration-color: var(--line); text-underline-offset: 2px;
+}
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.prompt { color: var(--accent); margin-right: .1rem; }
+em { font-style: italic; }
+strong { font-weight: 600; }
+
+.back { margin: 0 0 1.75rem; font-size: .9rem; }
+.back a { color: var(--muted); text-decoration: none; }
+.back a:hover { color: var(--accent); }
+
+.theme-toggle {
+  position: fixed; top: .8rem; right: .8rem; z-index: 50;
+  font: 600 12px var(--mono); color: var(--muted);
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 5px; padding: .2rem .55rem; cursor: pointer;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+/* header */
+.page-head h1 { font-size: 1.55rem; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+.page-head .lead { color: var(--fg); margin: .6rem 0 0; }
+.meta { color: var(--muted); font-size: .82rem; margin: .6rem 0 0; }
+.meta .tag {
+  background: var(--code-bg); color: var(--muted);
+  padding: .05rem .4rem; border-radius: 3px; margin-left: .25rem;
+}
+
+/* sections */
+section { margin-top: 2.5rem; }
+h2 {
+  font-size: 1.05rem; font-weight: 600; margin: 0 0 1rem;
+  padding-bottom: .4rem; border-bottom: 1px solid var(--line);
+}
+h2::before { content: "# "; color: var(--accent); }
+p { margin: 0 0 1rem; }
+section p:last-child { margin-bottom: 0; }
+.muted { color: var(--muted); }
+
+/* figures — light tile in both themes */
+figure { margin: 1.5rem 0; text-align: center; }
+figure img {
+  max-width: 100%; height: auto; display: inline-block;
+  background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 8px;
+}
+figure.row { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; align-items: center; }
+figure.row img { flex: 0 1 auto; max-width: 31%; }
+figcaption { color: var(--muted); font-size: .85rem; line-height: 1.5; margin-top: .7rem; text-align: center; }
+
+/* KaTeX */
+.katex { font-size: 1.03em; }
+.formula { margin: 1rem 0; text-align: center; overflow-x: auto; }
+
+/* references */
+.ref { color: var(--muted); font-size: .88rem; }
+
+/* footer */
+footer {
+  margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .8rem;
+}
+footer p { margin: 0 0 .3rem; }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+
+@media (max-width: 40rem) {
+  figure.row img { max-width: 47%; }
+}
