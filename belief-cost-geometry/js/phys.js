@@ -1,5 +1,5 @@
 /* ============================================================================
-   PHYS — closed forms for the cost geometry of belief (faithful to main_en_v1).
+   PHYS — closed forms for the transport-based geometry of belief-cost (faithful to main_en_v20b).
    Gaussian dictionary + v26 additions (Otto, cost metric, three characterizations,
    gauge). No DOM dependency: testable under Node (import) and in the browser.
    Every displayed number in the app comes from here; tests/test-phys.mjs pins these
@@ -121,20 +121,20 @@ export const PHYS = (function () {
   };
   const costFactor = (s, e = 0, name = '2J', c = 2) => 2 * (e + reliefU(s, name, c));
 
-  // ---- Characterization II: eikonal / honesty -----------------------------
+  // ---- Characterization II: eikonal / uniform pricing ---------------------
   // κ(σ) = ||∇_{g̃_{0,U}} H|| = √J / √(2U) = (1/σ)/√(2 U(σ)) ; flat ⟺ U = cJ
   const kappaOf = (s, name = '2J', c = 2) => (1 / s) / Math.sqrt(2 * reliefU(s, name, c));
   const eikonalKappa = (c = 2) => 1 / Math.sqrt(2 * c);   // κ for U = cJ
 
-  // ---- Characterization I: the wall ---------------------------------------
-  const wallStands = alpha => alpha >= 1;
+  // ---- Characterization I: the boundary at infinite cost-distance ---------
+  const boundaryStands = alpha => alpha >= 1;
   // radial cost to certainty on U = cJ^α : ∫_cut^{σ0} √(2c)·σ^{-α} dσ
   const costToCertainty = (s0 = 1, alpha = 1, c = 2, cut = 1e-6) => {
     const k = Math.sqrt(2 * c);
     if (Math.abs(alpha - 1) < 1e-12) return k * Math.log(s0 / cut);
     return k * (Math.pow(s0, 1 - alpha) - Math.pow(cut, 1 - alpha)) / (1 - alpha);
   };
-  // wall bound : ℓ_e ≥ √(2ε)|ΔH|, with ε = c for U = cJ
+  // boundary bound : ℓ_e ≥ √(2ε)|ΔH|, with ε = c for U = cJ
   const costFloor = (s0, st, c = 2) => Math.sqrt(2 * c) * Math.abs(H(s0) - H(st));
 
   // ---- Characterization III: curvature & Stam rigidity --------------------
@@ -202,7 +202,7 @@ export const PHYS = (function () {
     posterior, crFloorVar, fisherIntegrand, klGauss,
     w2Gauss, otMap, mccann, ottoSlope,
     reliefU, costFactor, kappaOf, eikonalKappa,
-    wallStands, costToCertainty, costFloor,
+    boundaryStands, costToCertainty, costFloor,
     J0base, curvE0, curvE, gauge, cayley,
     eta, pSS, tauF, dJrealise, ewcPenalty,
     KB, kBT, landauerNat, landauerBit, erasureEnergy, pFloor, decades,

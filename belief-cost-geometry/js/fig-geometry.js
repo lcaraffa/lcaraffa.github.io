@@ -1,13 +1,13 @@
 /* fig-geometry.js — "The geometry the cost imposes."
    Postulate 0 makes the cost a length on optimal transport (the arena); Postulate 1
-   makes the price honest — one nat costs the same length everywhere. Together they
+   makes the price uniform — one nat costs the same length everywhere. Together they
    force a HYPERBOLIC leaf of beliefs: certainty (σ → 0) is pushed to INFINITE
-   distance — the wall. Shown in two models of the same leaf:
-     · half-plane — the wall is the bottom edge;
+   cost-distance — the boundary ∂∞. Shown in two models of the same leaf:
+     · half-plane — the boundary is the bottom edge;
      · Poincaré disk — certainty is the whole boundary, at infinity.
    The cheapest way to change one's mind is the geodesic (open up → traverse → close),
-   not the straight chord. Equal-cost graduations make honesty visible: they crowd
-   toward the wall. A bead travels at constant COST-speed (ambient); drag a belief in
+   not the straight chord. Equal-cost graduations make uniform pricing visible: they crowd
+   toward the boundary. A bead travels at constant COST-speed (ambient); drag a belief in
    either panel (interactive). Distances/curvature from phys.js. */
 import { fit, reg } from './canvas.js';
 import { observe, anim, motion } from './viewport.js';
@@ -82,7 +82,7 @@ export function mountGeometry(root) {
   const up = () => drag = -1; cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
 
   /* cost-arclength position of the bead: pick the geodesic point at fraction `bead`
-     of total cost (so it slows where steps cost more — it crowds toward the wall). */
+     of total cost (so it slows where steps cost more — it crowds toward the boundary). */
   function beadPoint(gp, cum, total) {
     const target = total * bead; let i = 1; while (i < gp.length && cum[i] < target) i++;
     return gp[Math.min(i, gp.length - 1)];
@@ -120,9 +120,9 @@ export function mountGeometry(root) {
     [0.5, 1, 2, 3].forEach(s => { const y = Yh(r, s); ctx.beginPath(); ctx.moveTo(Xh(r, -MU), y); ctx.lineTo(Xh(r, MU), y); ctx.stroke();
       texte(ctx, 'σ=' + s, Xh(r, -MU) + 2, y - 3, C.encre2, 8.5, 'left', false); });
     const yb = Yh(r, 0); ctx.strokeStyle = C.encre; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(Xh(r, -MU), yb); ctx.lineTo(Xh(r, MU), yb); ctx.stroke();
-    texte(ctx, 'the wall · certainty σ=0 (infinite distance)', r.x + r.w / 2, yb - 5, C.encre2, 9.5, 'center', false);
+    texte(ctx, 'the boundary ∂∞ · certainty σ=0 (infinite cost-distance)', r.x + r.w / 2, yb - 5, C.encre2, 9.5, 'center', false);
     overlay(ctx, (m, s) => ({ x: Xh(r, m), y: Yh(r, s) }), gp, lp);
-    texte(ctx, 'half-plane — the wall is the bottom edge', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
+    texte(ctx, 'half-plane — the boundary is the bottom edge', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
     ctx.restore();
   }
 
@@ -175,7 +175,7 @@ export function mountGeometry(root) {
     mG.val.textContent = fmt(dGeo); mC.val.textContent = fmt(dCh);
     mS.val.textContent = Math.max(0, Math.round(100 * (1 - dGeo / dCh))) + ' %';
     mK.val.textContent = fmt(PHYS.curvE0(2, 1));
-    texte(ctx, '● equal-cost steps crowd toward the wall', 6, Hp - 6, C.energie, 9, 'left', false);
+    texte(ctx, '● equal-cost steps crowd toward the boundary', 6, Hp - 6, C.energie, 9, 'left', false);
     texte(ctx, 'drag a belief (either panel)', W - 6, Hp - 6, C.encre2, 9, 'right', false);
   }
 

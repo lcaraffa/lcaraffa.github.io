@@ -14,7 +14,7 @@ const PROJECTS = [
     },
   },
   {
-    title: "belief-cost geometry",
+    title: "A Transport-Based Geometry of Belief-Cost",
     year: 2026,
     blurb: "The geometry of what it costs a finite agent to change its mind. " +
            "Two postulates give a hyperbolic space of beliefs whose cusp — certainty — is infinitely far.",

@@ -3,8 +3,8 @@
    output is a BELIEF (the Bayes posterior) — a density over states, never a point.
    Certainty (the perfect twin, a centred Dirac) is denied TWICE, and both denials
    speak one language, Fisher information J = 1/sigma^2:
-     wall 1 — observation : Var(x) >= 1/J  (Cramer-Rao); sigma shrinks only as sigma_obs/sqrt(n)
-     wall 2 — physics     : erasing a nat costs >= kT  (Landauer); certainty => infinite energy
+     denial 1 — observation : Var(x) >= 1/J  (Cramer-Rao); sigma shrinks only as sigma_obs/sqrt(n)
+     denial 2 — physics     : erasing a nat costs >= kT  (Landauer); certainty => infinite energy
    Ambient: the belief sharpens as observations accrue, then resets — until you touch a control.
    Physics from phys.js (tested against the paper's closed forms). */
 import { fit, reg } from './canvas.js';
@@ -105,14 +105,14 @@ export function mountTwin(root) {
     texte(ctx, n + ' observations', x0 + w, axisY - 4, C.info, 10.5, 'right', false);
     texte(ctx, 'prior', x0 + 4, axisY - 6, C.encre2, 9, 'left', false);
 
-    // ----- the two walls -----
-    const wallTop = axisY + 12, colW = w / 2;
-    ctx.strokeStyle = C.filet; ctx.beginPath(); ctx.moveTo(x0, wallTop); ctx.lineTo(x0 + w, wallTop); ctx.stroke();
+    // ----- the two denials -----
+    const barTop = axisY + 12, colW = w / 2;
+    ctx.strokeStyle = C.filet; ctx.beginPath(); ctx.moveTo(x0, barTop); ctx.lineTo(x0 + w, barTop); ctx.stroke();
     const crFloor = Math.sqrt(PHYS.crFloorVar(sobs, n));   // sigma_obs / sqrt(n)
 
-    // wall 1 — observation (Cramer-Rao)
-    texte(ctx, 'wall 1 · observation  (Cramér–Rao)', x0, wallTop + 18, C.info, 11.5, 'left', false);
-    const gx0 = x0 + 6, gw = colW - 30, trackY = wallTop + 40;
+    // denial 1 — observation (Cramer-Rao)
+    texte(ctx, 'denial 1 · observation  (Cramér–Rao)', x0, barTop + 18, C.info, 11.5, 'left', false);
+    const gx0 = x0 + 6, gw = colW - 30, trackY = barTop + 40;
     const sc = v => clamp(v / TAU0, 0, 1) * gw;
     ctx.fillStyle = C.grille; ctx.fillRect(gx0, trackY, gw, 12);
     ctx.fillStyle = C.info + '55'; ctx.fillRect(gx0, trackY, sc(sn), 12);
@@ -122,13 +122,13 @@ export function mountTwin(root) {
     texte(ctx, '↑ floor  Var ≥ 1/J', gx0 + sc(crFloor) + 4, trackY + 30, C.okD, 9.5, 'left', false);
     texte(ctx, 'σ shrinks only as σₒ/√n', gx0, trackY + 46, C.encre2, 9.5, 'left', false);
 
-    // wall 2 — physics (Landauer)
+    // denial 2 — physics (Landauer)
     const x2 = x0 + colW + 10;
-    texte(ctx, 'wall 2 · physics  (Landauer)', x2, wallTop + 18, C.energie, 11.5, 'left', false);
-    texte(ctx, 'pinning the belief costs ≥ kʙT per nat', x2, wallTop + 38, C.encre2, 9.5, 'left', false);
+    texte(ctx, 'denial 2 · physics  (Landauer)', x2, barTop + 18, C.energie, 11.5, 'left', false);
+    texte(ctx, 'pinning the belief costs ≥ kʙT per nat', x2, barTop + 38, C.encre2, 9.5, 'left', false);
     const epn = PHYS.kBT(300) / 1e-21;
-    texte(ctx, '≥ ' + epn.toFixed(1) + ' zJ / nat   (T = 300 K)', x2, wallTop + 54, C.energie, 10.5, 'left', false);
-    texte(ctx, 'certainty ⇒ infinite energy', x2, wallTop + 70, C.energie, 9.5, 'left', false);
+    texte(ctx, '≥ ' + epn.toFixed(1) + ' zJ / nat   (T = 300 K)', x2, barTop + 54, C.energie, 10.5, 'left', false);
+    texte(ctx, 'certainty ⇒ infinite energy', x2, barTop + 70, C.energie, 9.5, 'left', false);
 
     // the one constraint
     texte(ctx, 'one constraint, read twice:  J = 1/σ²', x0 + w / 2, Hp - 7, C.soudure, 11.5, 'center', false);

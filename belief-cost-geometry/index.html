@@ -4,23 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="title" content="The Cost Geometry of Belief — Laurent Caraffa">
-  <meta name="description" content="A finite agent cannot hold a perfect twin of the world. From two postulates — cost is a price on transport, and the price is honest — a hyperbolic geometry of belief follows, with certainty infinitely far away.">
+  <meta name="title" content="A Transport-Based Geometry of Belief-Cost — Laurent Caraffa">
+  <meta name="description" content="A finite agent cannot hold a perfect twin of the world. From two postulates — cost is a price on transport, and the price is uniform — a hyperbolic geometry of belief follows, with certainty at infinite cost-distance.">
   <meta name="keywords" content="belief-cost geometry, optimal transport, Wasserstein, Fisher information, Bayesian inference, information geometry, entropy, thermodynamics of computation, Stam inequality">
   <meta name="author" content="Laurent Caraffa">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="The Cost Geometry of Belief">
+  <meta property="og:title" content="A Transport-Based Geometry of Belief-Cost">
   <meta property="og:description" content="Two postulates, one hyperbolic geometry of belief. Interactive research-project page.">
 
-  <meta name="citation_title" content="The Cost Geometry of Belief: Finite-Resource Inference under Noisy Observation">
+  <meta name="citation_title" content="A Transport-Based Geometry of Belief-Cost: an axiomatic characterization">
   <meta name="citation_author" content="Caraffa, Laurent">
   <meta name="citation_publication_date" content="2026">
   <meta name="citation_arxiv_id" content="2606.21585">
   <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2606.21585">
   <meta name="theme-color" content="#11131a">
 
-  <title>The Cost Geometry of Belief — Laurent Caraffa</title>
+  <title>A Transport-Based Geometry of Belief-Cost — Laurent Caraffa</title>
   <link rel="icon" href="../assets/favicon.svg">
 
   <link rel="stylesheet" href="vendor/katex/katex.min.css">
@@ -37,8 +37,8 @@
     <p class="back"><a href="../"><span class="prompt">~/</span>projects</a></p>
 
     <header class="page-head">
-      <h1>The Cost Geometry of Belief</h1>
-      <p class="tagline">Finite-Resource Inference under Noisy Observation.</p>
+      <h1>A Transport-Based Geometry of Belief-Cost</h1>
+      <p class="tagline">An axiomatic characterization.</p>
       <p class="authors"><a href="https://www.umr-lastig.fr/laurent-caraffa/">Laurent Caraffa</a></p>
       <p class="venue">Université Gustave Eiffel, LASTIG, IGN-ENSG · Preprint · 2026 · arXiv:2606.21585</p>
       <p class="links">
@@ -54,8 +54,8 @@
       <p class="fig-lead">
         <b>Two postulates, one hyperbolic geometry.</b> A belief is a point in the
         <span data-tex="(\mu,\sigma)"></span> plane; certainty is the boundary. Cost is a price on transport,
-        and the price is honest — so this space is <em>hyperbolic</em>: certainty sits infinitely far away
-        (the wall), and the cheapest change of mind is a geodesic, not a straight line.
+        and the price is uniform — so this space is <em>hyperbolic</em>: certainty sits at infinite
+        cost-distance (the boundary <span data-tex="\partial_\infty"></span>), and the cheapest change of mind is a geodesic, not a straight line.
         <span style="white-space:nowrap">Drag a belief in either model.</span>
       </p>
     </section>
@@ -66,17 +66,17 @@
         model its coherent output as a <em>belief</em> — a probability density over states, the Bayes
         posterior, never a point. Certainty — the perfect twin — is denied twice, by observation and by
         physics, both read off the Fisher information. To make this finiteness geometric — distances, a
-        wall, a curvature — we model what it costs to <em>change</em> a belief: a
+        boundary, a curvature — we model what it costs to <em>change</em> a belief: a
         <em>belief-cost geometry</em>, optimal transport in Wasserstein space reweighted conformally by
         Fisher information.</p>
       <p>The framework rests on <strong>two posed commitments</strong>: that revision cost is a
-        <em>scalar price on transport</em> (the arena), and that the price is <em>honest</em> — one nat
-        costs the same length everywhere. Honesty selects the Fisher reweighting because transport
+        <em>scalar price on transport</em> (the arena), and that the price is <em>uniform</em> — one nat
+        costs the same length everywhere. Uniform pricing selects the Fisher reweighting because transport
         <em>demotes</em> Fisher information from the ruler of distinguishability to the slope of entropy
         — the move that sets transport apart from Fisher–Rao. From the two postulates, three results
         follow on the conformal (essentially location-scale) class, all invariants of one change of cost
-        unit: a <strong>wall</strong> (certainty rejected to infinite distance), an
-        <strong>honest family</strong> (<span data-tex="U=cJ"></span>, the characterization of the second
+        unit: a <strong>boundary at infinite cost-distance</strong> (certainty rejected to infinity), the
+        <strong>Fisher family</strong> (<span data-tex="U=cJ"></span>, the characterization of the second
         postulate), and a <strong>rigidity</strong> (these geometries are hyperbolic, and the Stam bound
         crowns the Gaussian). Thermodynamics fixes the cost unit and motivates the framework; the results
         are geometric, in nats.</p>
@@ -98,7 +98,7 @@
       <div class="fig"><div data-fig="twin"></div></div>
       <p class="caption"><b>The twofold denial of certainty.</b> The belief (violet) sharpens
         as observations accrue, yet stays a density; the barred Dirac is the perfect twin, excluded. Below, the
-        two walls — both reading <span data-tex="J=1/\sigma^2"></span>. Drag the sliders; it replays on its own.</p>
+        two denials — both reading <span data-tex="J=1/\sigma^2"></span>. Drag the sliders; it replays on its own.</p>
     </section>
 
     <section>
@@ -117,11 +117,11 @@
           <div class="formula-center" data-tex="\tilde g \;=\; 2\,(e+U)\,\,g_{\mathcal W_2}" data-display="1"></div>
         </div>
         <div class="post">
-          <span class="tag">Postulate 1 · honesty</span>
+          <span class="tag">Postulate 1 · uniform pricing</span>
           <h3>One nat costs the same length everywhere</h3>
-          <p>The price is <em>honest</em> (eikonal): the metric slope of knowledge <span data-tex="-H"></span>
+          <p>The price is <em>uniform</em> (eikonal): the metric slope of knowledge <span data-tex="-H"></span>
             is constant across the space of beliefs. Because transport <em>demotes</em> Fisher to the slope of
-            entropy, honesty singles out a unique family:</p>
+            entropy, uniform pricing singles out a unique family:</p>
           <div class="formula-center" data-tex="\kappa=\frac{\sqrt J}{\sqrt{2U}}=\text{const}\;\Longleftrightarrow\; U=cJ" data-display="1"></div>
         </div>
       </div>
@@ -136,17 +136,17 @@
         <strong>hyperbolic</strong>: the cheapest way to change one's mind is a geodesic — open up,
         traverse, close — not the straight chord, and equal-cost steps crowd toward the boundary. That
         boundary, certainty <span data-tex="\sigma\to0"></span>, is pushed to <strong>infinite
-        distance</strong>: the wall.</p>
+        cost-distance</strong> — the boundary <span data-tex="\partial_\infty"></span>.</p>
       <div class="cards-3">
         <div class="res">
-          <div class="rk">The wall</div>
+          <div class="rk">The boundary</div>
           <h3>Certainty is unreachable</h3>
-          <p>A well-posed inference rejects certainty to infinite distance as soon as cost dominates Fisher:
+          <p>A well-posed inference rejects certainty to infinite cost-distance as soon as the relief dominates Fisher:
             <span data-tex="d_e\ge\sqrt{2\varepsilon}\,|\Delta H|\!\to\!\infty"></span>.</p>
         </div>
         <div class="res">
-          <div class="rk">The honest family</div>
-          <h3>Honesty ⇔ Fisher</h3>
+          <div class="rk">The Fisher family</div>
+          <h3>Uniform pricing ⇔ Fisher</h3>
           <p>The eikonal price — each nat the same length everywhere — is <em>equivalent</em> to
             <span data-tex="U=cJ"></span>, the Fisher family. The characterization of Postulate 1.</p>
         </div>
@@ -164,8 +164,8 @@
     <section>
       <h2>BibTeX</h2>
       <pre class="bibtex"><button class="copy" type="button" aria-label="copy bibtex">copy</button><code>@misc{caraffa2026costgeometry,
-  title         = {The Cost Geometry of Belief: Finite-Resource Inference
-                   under Noisy Observation},
+  title         = {A Transport-Based Geometry of Belief-Cost:
+                   an axiomatic characterization},
   author        = {Caraffa, Laurent},
   year          = {2026},
   eprint        = {2606.21585},

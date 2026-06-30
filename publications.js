@@ -6,7 +6,7 @@
 const PUBLICATIONS = [
   // ---- 2026 ----
   {
-    title: "The Cost Geometry of Belief: Finite-Resource Inference under Noisy Observation",
+    title: "A Transport-Based Geometry of Belief-Cost: an axiomatic characterization",
     authors: "L. Caraffa",
     venue: "Preprint · arXiv:2606.21585",
     year: 2026,
