@@ -79,8 +79,13 @@ h2 {
   padding-bottom: .4rem; border-bottom: 1px solid var(--line);
 }
 h2::before { content: "# "; color: var(--accent); }
+h3 { font-size: .95rem; font-weight: 600; margin: 1.6rem 0 .7rem; }
+h3::before { content: "## "; color: var(--accent); }
 section p { margin: 0 0 1rem; }
 section p:last-child { margin-bottom: 0; }
+section ul { padding-left: 1.2rem; margin: 0 0 1rem; }
+section li { margin: 0 0 .6rem; font-size: .95rem; line-height: 1.6; }
+.btn.active { border-color: var(--belief); color: var(--belief); }
 .fig-lead { text-align: center; color: var(--fg); margin: 1rem auto 0; max-width: 44rem; }
 .closing { text-align: center; color: var(--muted); margin-top: .8rem; }
 
@@ -136,7 +141,7 @@ input[type=range].sl-energie::-moz-range-thumb { background: var(--energy); }
 
 /* ---- KaTeX ------------------------------------------------------------- */
 .katex { font-size: 1.03em; }
-.formula-center { margin: .9rem 0; text-align: center; }
+.formula-center { margin: .9rem 0; text-align: center; overflow-x: auto; }
 .post .formula-center { margin: .7rem 0 0; }
 
 /* ---- bibtex ------------------------------------------------------------ */

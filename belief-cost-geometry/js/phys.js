@@ -184,6 +184,72 @@ export const PHYS = (function () {
   const ewcPenalty = (F, th, thstar) =>
     F.reduce((acc, Fi, i) => acc + Fi * (th[i] - thstar[i]) ** 2, 0);
 
+  // ---- Gaussian-process posterior (kriging), 1D RBF kernel -----------------
+  // Verbatim copy of the companion's tested block (belief-cost-geometry/js/phys.js,
+  // pinned to 1e-9 against a numpy reference by its tests/test-phys.mjs).
+  // k(x,x') = amp²·exp(−(x−x')²/2ℓ²) ; observations (xs[i], ys[i]) with known
+  // noise variances s2s[i] ; constant prior mean mu0. Exact conjugate solve
+  // (Cholesky) — the "inverse problem" step that turns a likelihood into a
+  // proper belief over the whole field. n=0 returns the prior.
+  const rbf = (a, b, amp, ell) => amp * amp * Math.exp(-0.5 * ((a - b) / ell) ** 2);
+  const chol = A => {                       // lower-triangular L, A = L·Lᵀ
+    const n = A.length, L = A.map(r => r.slice().fill(0));
+    for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) {
+      let s = A[i][j];
+      for (let k = 0; k < j; k++) s -= L[i][k] * L[j][k];
+      L[i][j] = i === j ? Math.sqrt(Math.max(s, 1e-12)) : s / L[j][j];
+    }
+    return L;
+  };
+  const cholSolve = (L, b) => {             // solve L·Lᵀ x = b
+    const n = L.length, y = new Array(n), x = new Array(n);
+    for (let i = 0; i < n; i++) { let s = b[i]; for (let k = 0; k < i; k++) s -= L[i][k] * y[k]; y[i] = s / L[i][i]; }
+    for (let i = n - 1; i >= 0; i--) { let s = y[i]; for (let k = i + 1; k < n; k++) s -= L[k][i] * x[k]; x[i] = s / L[i][i]; }
+    return x;
+  };
+  const gpPosterior = (xs, ys, s2s, xgrid, { amp = 1, ell = 0.3, mu0 = 0 } = {}) => {
+    const n = xs.length;
+    if (n === 0) return { mean: xgrid.map(() => mu0), sd: xgrid.map(() => amp) };
+    const K = xs.map((xi, i) => xs.map((xj, j) => rbf(xi, xj, amp, ell) + (i === j ? s2s[i] : 0)));
+    const L = chol(K);
+    const alpha = cholSolve(L, ys.map(y => y - mu0));
+    const mean = [], sd = [];
+    for (const xq of xgrid) {
+      const ks = xs.map(xi => rbf(xq, xi, amp, ell));
+      const v = cholSolve(L, ks);
+      mean.push(mu0 + ks.reduce((a, k, i) => a + k * alpha[i], 0));
+      sd.push(Math.sqrt(Math.max(amp * amp - ks.reduce((a, k, i) => a + k * v[i], 0), 0)));
+    }
+    return { mean, sd };
+  };
+  // one sample path of the posterior on xgrid, given i.i.d. standard normals zs
+  const gpSample = (xs, ys, s2s, xgrid, opts = {}, zs) => {
+    const { amp = 1, ell = 0.3, mu0 = 0 } = opts, m = xgrid.length;
+    const { mean } = gpPosterior(xs, ys, s2s, xgrid, opts);
+    const Kgg = xgrid.map(a => xgrid.map(b => rbf(a, b, amp, ell)));
+    let Sg = Kgg;
+    if (xs.length > 0) {
+      const K = xs.map((xi, i) => xs.map((xj, j) => rbf(xi, xj, amp, ell) + (i === j ? s2s[i] : 0)));
+      const L = chol(K);
+      const Ks = xgrid.map(xq => xs.map(xi => rbf(xq, xi, amp, ell)));
+      const V = Ks.map(row => cholSolve(L, row));
+      Sg = Kgg.map((row, a) => row.map((kab, b) =>
+        kab - Ks[a].reduce((acc, k, i) => acc + k * V[b][i], 0)));
+    }
+    const jit = 1e-8 + 1e-6 * amp * amp;
+    const Lg = chol(Sg.map((row, i) => row.map((v, j) => v + (i === j ? jit : 0))));
+    return mean.map((mu, i) => {
+      let s = 0; for (let k = 0; k <= i; k++) s += Lg[i][k] * zs[k];
+      return mu + s;
+    });
+  };
+  // field-level Fisher readout: sum of marginal informations Σₖ 1/Var(xₖ) on a
+  // coarse grid (a lower bound of tr(Σ⁻¹)).
+  const gpFieldJ = (xs, ys, s2s, xgrid, opts = {}) => {
+    const { sd } = gpPosterior(xs, ys, s2s, xgrid, opts);
+    return sd.reduce((a, s) => a + 1 / Math.max(s * s, 1e-12), 0);
+  };
+
   // ---- physical scale (SI ; order of magnitude, Tier P) -------------------
   const KB = 1.380649e-23;                         // J/K
   const kBT = T => KB * T;                         // joules per nat
@@ -200,6 +266,7 @@ export const PHYS = (function () {
     dW2axis, dVieAxis, walker,
     dHyp, dVie, dW2, geodesic, geoPoints, linePoints, frGeoPoints, costLenPath, vieLengthPath,
     posterior, crFloorVar, fisherIntegrand, klGauss,
+    gpPosterior, gpSample, gpFieldJ,
     w2Gauss, otMap, mccann, ottoSlope,
     reliefU, costFactor, kappaOf, eikonalKappa,
     boundaryStands, costToCertainty, costFloor,
