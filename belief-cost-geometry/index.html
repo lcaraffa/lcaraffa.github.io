@@ -34,6 +34,12 @@
   <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme">dark/light</button>
 
   <main>
+    <noscript>
+      <p style="padding:.75rem 1rem;border:1px solid currentColor;border-radius:.4rem;margin:0 0 1.2rem">
+        This page renders its equations (KaTeX) and its interactive figures with JavaScript. With
+        JavaScript disabled, the formulas and the three figures will not appear — see the linked
+        paper (pdf) for the full derivations.</p>
+    </noscript>
     <p class="back"><a href="../"><span class="prompt">~/</span>projects</a></p>
 
     <header class="page-head">
@@ -50,11 +56,14 @@
 
     <!-- the geometry (headline figure) -->
     <section id="geometry" class="teaser">
-      <div class="fig"><div data-fig="geometry"></div></div>
+      <div class="fig"><div data-fig="geometry" role="img" aria-label="Interactive figure: the hyperbolic geometry of belief, shown as a Poincaré disk and a (mu, sigma) half-plane. Certainty lies on the infinitely distant boundary; the cheapest change of mind is a curved geodesic. Drag a belief in either model."></div></div>
       <p class="fig-lead">
         <b>Two postulates, one hyperbolic geometry.</b> A belief is a point in the
-        <span data-tex="(\mu,\sigma)"></span> plane; certainty is the boundary. Cost is a price on transport,
-        and the price is uniform — so this space is <em>hyperbolic</em>: certainty sits at infinite
+        <span data-tex="(\mu,\sigma)"></span> plane — its mean <span data-tex="\mu"></span> and width
+        <span data-tex="\sigma"></span>; certainty is the boundary <span data-tex="\sigma\to0"></span>.
+        Cost is a price on transport,
+        and the price is uniform — so this space is <em>hyperbolic</em> (negatively curved, saddle-like):
+        certainty sits at infinite
         cost-distance (the boundary <span data-tex="\partial_\infty"></span>), and the cheapest change of mind is a geodesic, not a straight line.
         <span style="white-space:nowrap">Drag a belief in either model.</span>
       </p>
@@ -71,7 +80,7 @@
         Fisher information.</p>
       <p>The framework rests on <strong>two posed commitments</strong>: that revision cost is a
         <em>scalar price on transport</em> (the arena), and that the price is <em>uniform</em> — one nat
-        costs the same length everywhere. Uniform pricing selects the Fisher reweighting because transport
+        (a unit of information — the base-e cousin of the bit) costs the same length everywhere. Uniform pricing selects the Fisher reweighting because transport
         <em>demotes</em> Fisher information from the ruler of distinguishability to the slope of entropy
         — the move that sets transport apart from Fisher–Rao. From the two postulates, three results
         follow on the conformal (essentially location-scale) class, all invariants of one change of cost
@@ -95,7 +104,7 @@
         (Cramér–Rao — the width shrinks only as <span data-tex="\sigma_{\mathrm{obs}}/\sqrt n"></span>) and by
         physics (Landauer — erasing one nat costs <span data-tex="\ge k_BT"></span>; certainty would cost
         infinite energy).</p>
-      <div class="fig"><div data-fig="twin"></div></div>
+      <div class="fig"><div data-fig="twin" role="img" aria-label="Interactive figure: as observations accrue the belief (a Gaussian) sharpens but never collapses to a point; the perfectly certain twin (a Dirac spike) stays excluded. Below, the two denials of certainty, both reading the Fisher information J = 1/sigma squared."></div></div>
       <p class="caption"><b>The twofold denial of certainty.</b> The belief (violet) sharpens
         as observations accrue, yet stays a density; the barred Dirac is the perfect twin, excluded. Below, the
         two denials — both reading <span data-tex="J=1/\sigma^2"></span>. Drag the sliders; it replays on its own.</p>
@@ -104,16 +113,19 @@
     <section>
       <h2>The two postulates</h2>
       <p>Finiteness fixes the <em>object</em> — a density, certainty excluded — but leaves the geometry
-        open. Everything below rests on exactly two posed commitments. Each is a choice an informed reader
+        open. Everything below rests on exactly two posed commitments, worked out on the location-scale
+        family (the Gaussian <span data-tex="(\mu,\sigma)"></span> beliefs). Each is a choice an informed reader
         could refuse; each is defended. Every other ingredient is forced, transparent, or borrowed.</p>
       <div class="cards">
         <div class="post">
           <span class="tag">Postulate 0 · the arena</span>
           <h3>Cost is a scalar price on transport</h3>
           <p>The cost of changing a belief is a <em>scalar price field over the optimal transport</em> of
-            probability mass — a transport metric reweighted by a scalar relief. It prices a revision; it does
+            probability mass — a transport metric reweighted by a scalar relief <span data-tex="U"></span>
+            (a positive cost-height over belief space). It prices a revision; it does
             not enact one (Bayes does that). A scalar times the transport metric is a <em>conformal</em>
-            reweighting:</p>
+            reweighting (<span data-tex="e"></span> a constant cost offset, here 0;
+            <span data-tex="g_{\mathcal W_2}"></span> the transport metric itself):</p>
           <div class="formula-center" data-tex="\tilde g \;=\; 2\,(e+U)\,\,g_{\mathcal W_2}" data-display="1"></div>
         </div>
         <div class="post">
@@ -132,7 +144,8 @@
 
     <section>
       <h2>The geometry the cost imposes</h2>
-      <p>From the two postulates the geometry is forced. On the location-scale leaf it is
+      <p>From the two postulates the geometry is forced. On the location-scale leaf — the
+        <span data-tex="(\mu,\sigma)"></span> plane of the headline figure — it is
         <strong>hyperbolic</strong>: the cheapest way to change one's mind is a geodesic — open up,
         traverse, close — not the straight chord, and equal-cost steps crowd toward the boundary. That
         boundary, certainty <span data-tex="\sigma\to0"></span>, is pushed to <strong>infinite
@@ -142,7 +155,7 @@
           <div class="rk">The boundary</div>
           <h3>Certainty is unreachable</h3>
           <p>A well-posed inference rejects certainty to infinite cost-distance as soon as the relief dominates Fisher:
-            <span data-tex="d_e\ge\sqrt{2\varepsilon}\,|\Delta H|\!\to\!\infty"></span>.</p>
+            <span data-tex="d\ge\sqrt{2c}\,|\Delta H|\!\to\!\infty"></span>.</p>
         </div>
         <div class="res">
           <div class="rk">The Fisher family</div>
@@ -175,9 +188,14 @@
         local price <span data-tex="\sqrt{2(e+cJ)}"></span>, and the distance from A to B is the
         cheapest bill, in nats.</p>
       <div class="formula-center" data-tex="\tilde g \;=\; \frac{4}{\sigma^2}\,\bigl(d\mu^2 + d\sigma^2\bigr) \tag{3}" data-display="1"></div>
-      <p>The cost metric on the Gaussian leaf, where <span data-tex="J = 1/\sigma^2"></span>: the
-        Poincaré half-plane with every length doubled. A step costs 2/σ nats per metre, a price
-        that doubles each time σ halves — the tariff map painted behind the figures.</p>
+      <p>The cost metric on the Gaussian leaf. On this leaf the transport metric is itself <em>flat</em>
+        — the <span data-tex="\mathcal W_2"></span> distance between two Gaussians is just the Euclidean
+        distance in <span data-tex="(\mu,\sigma)"></span>, so
+        <span data-tex="g_{\mathcal W_2} = d\mu^2 + d\sigma^2"></span> — and with
+        <span data-tex="J = 1/\sigma^2"></span> the local price <span data-tex="2(e+cJ)"></span> becomes
+        <span data-tex="4/\sigma^2"></span>: the Poincaré half-plane with every length doubled. A step
+        costs 2/σ nats per metre, a price that doubles each time σ halves — the tariff map painted
+        behind the figures.</p>
       <div class="formula-center" data-tex="d(A,B) \;=\; 2\,\operatorname{arcosh}\!\left(1 + \frac{(\mu_1-\mu_0)^2 + (\sigma_1-\sigma_0)^2}{2\,\sigma_0\,\sigma_1}\right) \tag{4}" data-display="1"></div>
       <p>The distance between two Gaussian beliefs <span data-tex="A = (\mu_0, \sigma_0)"></span>
         and <span data-tex="B = (\mu_1, \sigma_1)"></span>: the classical half-plane distance,
@@ -218,7 +236,7 @@
         weakly, as sensors are added.</p>
 
       <h3>The figure, step by step</h3>
-      <div class="fig"><div data-fig="dt"></div></div>
+      <div class="fig"><div data-fig="dt" role="img" aria-label="Interactive figure: the digital twin of a field. Left, a field with its kriging belief and sensors; right, the belief about the height at a chosen location x0 as a point in the (mu, sigma) half-plane, with two routes — a curved geodesic and a straight chord — whose length is the revision cost in nats."></div></div>
       <p class="caption"><b>The digital twin of a field.</b> Left: the field and its kriging belief.
         Right: the belief space of the readout at x₀ — the (μ, σ) half-plane, with height in metres on
         the horizontal axis. Two tabs select the regime, <em>Learn (n)</em> and
@@ -248,7 +266,9 @@
           to the current n (the paid part), faint beyond — and carries one photo dot per sensor. The
           violet arc is the geodesic from photo 0 (or the pinned A) to photo n: the same revision in
           one go. The meters read σ(x₀), the cost of the last step, the drip-fed total with its ratio,
-          the direct revision in one go, and the whole-field information Σₖ J(xₖ). Rings mark
+          the direct revision in one go, and the whole-field information Σₖ J(xₖ) — the field's total
+          sharpness summed over locations across the field, not over the sensors, which climbs as the
+          belief tightens. Rings mark
           n = 5, 10, 20, 40: each doubling of the evidence costs a step of the same order (in the
           i.i.d. limit, exactly ½ ln 2 nat of entropy). “Shuffle the order” permutes the sensors: the
           thread rearranges, photo 0 and photo 40 hold still — the order is a gauge; set n = 40 to
