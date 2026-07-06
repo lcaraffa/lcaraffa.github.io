@@ -8,28 +8,36 @@
    The cheapest way to change one's mind is the geodesic (open up → traverse → close),
    not the straight chord. Equal-cost graduations make uniform pricing visible: they crowd
    toward the boundary. A bead travels at constant COST-speed (ambient); drag a belief in
-   either panel (interactive). Distances/curvature from phys.js. */
+   either panel (interactive). BELOW the panels, a strip shows the belief ITSELF — the
+   Gaussian bell — along each route: on the geodesic it opens up (accepts doubt) then
+   re-tightens, mass conserved; on the chord it keeps its width and only slides. The
+   highlighted frame follows the traveler; the slider scrubs it. Distances/curvature from
+   phys.js. */
 import { fit, reg } from './canvas.js';
 import { observe, anim, motion } from './viewport.js';
 import { PHYS } from './phys.js';
-import { C, fmt, clamp, el, toggle, readout } from './util.js';
+import { C, fmt, clamp, el, toggle, slider, readout } from './util.js';
 import { texte } from './plane.js';
 
 export function mountGeometry(root) {
-  let showRelief = true;
-  const MU = 4, SMAX = 3.4;
+  let showRelief = true, playing = true;
+  const MU = 4, SMAX = 3.4, STRIP_H = 152;
   const DEF = () => [[-2.4, 0.5], [2.4, 0.5]];   // confident & far apart → big detour saving
   let P = DEF();
-  let bead = 0, beadDir = 1;                       // ambient traveler along the geodesic
+  let bead = 0, beadDir = 1;                       // ambient traveler along the geodesic (cost-fraction)
 
-  const cv = el('canvas', { height: 380, tabindex: '0',
-    'aria-label': 'The same beliefs in two models of one hyperbolic leaf: Poincaré half-plane and disk.' });
+  const cv = el('canvas', { height: 380 + STRIP_H, tabindex: '0',
+    'aria-label': 'The same beliefs in two models of one hyperbolic leaf (Poincaré half-plane and disk), and a strip showing the belief itself — a Gaussian bell — along each route: the geodesic opens up then re-tightens, the straight chord keeps its width.' });
   const stage = el('div', { class: 'stage' }, [cv]);
   root.appendChild(stage);
 
   const tgR = toggle({ checked: true, label: 'cost relief' });
-  root.appendChild(el('div', { class: 'controls' }, [tgR.wrap]));
+  const tgA = toggle({ checked: true, label: 'animate' });
+  const rP = slider({ min: 0, max: 1, step: 0.005, value: 0, accent: 'energie', label: 'position along the route' });
+  root.appendChild(el('div', { class: 'controls' }, [tgR.wrap, tgA.wrap, rP.ctl]));
   tgR.input.addEventListener('change', () => { showRelief = tgR.input.checked; draw(); });
+  tgA.input.addEventListener('change', () => { playing = tgA.input.checked; draw(); });
+  rP.input.addEventListener('input', () => { playing = false; tgA.input.checked = false; bead = +rP.input.value; draw(); });
 
   const mG = readout('geodesic cost =', 'soudure'), mC = readout('chord cost =', 'info'),
         mS = readout('saved', 'energie'), mK = readout('curvature K =', 'encre');
@@ -81,12 +89,10 @@ export function mountGeometry(root) {
   });
   const up = () => drag = -1; cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
 
-  /* cost-arclength position of the bead: pick the geodesic point at fraction `bead`
-     of total cost (so it slows where steps cost more — it crowds toward the boundary). */
-  function beadPoint(gp, cum, total) {
-    const target = total * bead; let i = 1; while (i < gp.length && cum[i] < target) i++;
-    return gp[Math.min(i, gp.length - 1)];
-  }
+  /* cost cumulative along a (μ,σ) polyline — 2·d_hyp is the exact metric length element */
+  const segCost = (a, b) => 2 * PHYS.dHyp(a[0], a[1], b[0], b[1]);
+  const cumOf = pts => { const c = [0]; for (let i = 1; i < pts.length; i++) c[i] = c[i - 1] + segCost(pts[i - 1], pts[i]); return c; };
+  const atFrac = (pts, cum, f) => { const t = cum[cum.length - 1] * f; let i = 1; while (i < cum.length && cum[i] < t) i++; return pts[Math.min(i, pts.length - 1)]; };
 
   function overlay(ctx, pfn, gp, lp) {
     const path = (pts, col, lw, dash) => { ctx.save(); if (dash) ctx.setLineDash(dash); ctx.beginPath();
@@ -95,13 +101,12 @@ export function mountGeometry(root) {
     path(lp, C.info, 1.6, [5, 4]);
     path(gp, C.soudure, 2.4);
     // equal-cost graduations
-    const cum = [0]; for (let i = 1; i < gp.length; i++) cum[i] = cum[i - 1] + 2 * PHYS.dHyp(gp[i - 1][0], gp[i - 1][1], gp[i][0], gp[i][1]);
+    const cum = cumOf(gp);
     const total = cum[cum.length - 1], K = 12;
-    for (let j = 1; j < K; j++) { const target = total * j / K; let i = 1; while (i < gp.length && cum[i] < target) i++;
-      const p = gp[Math.min(i, gp.length - 1)], q = pfn(p[0], p[1]);
+    for (let j = 1; j < K; j++) { const p = atFrac(gp, cum, j / K), q = pfn(p[0], p[1]);
       ctx.beginPath(); ctx.arc(q.x, q.y, 2.4, 0, 7); ctx.fillStyle = C.soudure; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke(); }
-    // ambient bead (constant cost-speed)
-    if (total > 0) { const pb = beadPoint(gp, cum, total), q = pfn(pb[0], pb[1]);
+    // ambient bead (constant cost-speed) — the traveler
+    if (total > 0) { const pb = atFrac(gp, cum, bead), q = pfn(pb[0], pb[1]);
       ctx.beginPath(); ctx.arc(q.x, q.y, 4, 0, 7); ctx.fillStyle = C.energie; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
     // apex "open up"
     let apex = gp[0]; gp.forEach(p => { if (p[1] > apex[1]) apex = p; });
@@ -161,30 +166,81 @@ export function mountGeometry(root) {
     ctx.restore();
   }
 
+  /* ---- the strip: the belief itself (a Gaussian bell) along each route ------ */
+  const npdf = (x, m, s) => Math.exp(-0.5 * ((x - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
+  function stations(pts, cum, NF) { const out = []; for (let k = 0; k < NF; k++) out.push(atFrac(pts, cum, NF === 1 ? 0 : k / (NF - 1))); return out; }
+
+  function drawStrip(ctx, W, y0, H, gp, lp) {
+    const cumG = cumOf(gp), cumL = cumOf(lp);
+    const NF = W < 560 ? 5 : 7;
+    const geo = stations(gp, cumG, NF), cho = stations(lp, cumL, NF);
+    const all = geo.concat(cho);
+    const sMin = Math.min(...all.map(p => p[1])), sMax = Math.max(...all.map(p => p[1]));
+    const padX = 10, cellsW = W - 2 * padX, cellW = cellsW / NF;
+    const pxPerUnit = 0.82 * cellW / (6.8 * sMax);       // fit the widest bell (±3.4σ) in a cell
+    const pdfMax = npdf(0, 0, sMin);                     // mass-conserved vertical scale
+    const bellH = 40, kCur = Math.round(clamp(bead, 0, 1) * (NF - 1));
+
+    ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(6, y0 + 2.5); ctx.lineTo(W - 6, y0 + 2.5); ctx.stroke();
+    texte(ctx, 'the belief itself, along each route — the framed bell is where the traveler is now', 6, y0 + 15, C.encre2, 10, 'left', false);
+
+    const rows = [
+      { st: geo, col: C.soudure, capY: y0 + 30, cap: 'geodesic — the belief opens up (accepts more uncertainty), then re-tightens' },
+      { st: cho, col: C.info, capY: y0 + 30 + 6 + bellH + 12, cap: 'straight chord — the belief never opens up (never wider than the two ends)' },
+    ];
+    rows.forEach(({ st, col, capY, cap }) => {
+      const baseY = capY + 6 + bellH;
+      texte(ctx, cap, padX, capY, col, 9.5, 'left', false);
+      ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padX, baseY + 0.5); ctx.lineTo(padX + cellsW, baseY + 0.5); ctx.stroke();
+      st.forEach((p, k) => {
+        const cx = padX + (k + 0.5) * cellW, mu = p[0], s = p[1], cur = k === kCur;
+        const half = 3.4 * s * pxPerUnit, N = 48;
+        ctx.beginPath();
+        for (let i = 0; i <= N; i++) { const x = -3.4 * s + (i / N) * 6.8 * s;
+          const X = cx + x * pxPerUnit, Y = baseY - (npdf(mu + x, mu, s) / pdfMax) * bellH;
+          i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }
+        ctx.lineTo(cx + half, baseY); ctx.lineTo(cx - half, baseY); ctx.closePath();
+        ctx.fillStyle = col + (cur ? '30' : '12'); ctx.fill();
+        ctx.strokeStyle = cur ? col : col + '80'; ctx.lineWidth = cur ? 2 : 1.2; ctx.stroke();
+        if (cur) { ctx.strokeStyle = C.energie; ctx.lineWidth = 1.2; ctx.strokeRect(padX + k * cellW + 1, capY + 3, cellW - 2, baseY - capY - 2); }
+      });
+    });
+    const axisY = y0 + 30 + 6 + bellH + 12 + 6 + bellH + 12;
+    texte(ctx, '→ the world (the value the belief is about) · a wider bell = more uncertainty · the area (total probability) is always 1',
+      padX, Math.min(axisY, y0 + H - 4), C.encre2, 8.5, 'left', false);
+  }
+
   function draw() {
     const g = fit(cv); const ctx = g.ctx, W = g.W, Hp = g.Hpx;
     ctx.clearRect(0, 0, W, Hp);
-    lay = layout(W, Hp);
+    const panelsH = Hp - STRIP_H;
+    lay = layout(W, panelsH);
     const gp = PHYS.geoPoints(P[0][0], P[0][1], P[1][0], P[1][1], 160);
     const lp = PHYS.linePoints(P[0][0], P[0][1], P[1][0], P[1][1], 160);
     drawHalf(ctx, lay.half, gp, lp);
     drawDisk(ctx, lay.disk, gp, lp);
-    if (!lay.stack) { ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2, 8); ctx.lineTo(W / 2, Hp - 8); ctx.stroke(); }
+    if (!lay.stack) { ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(W / 2, 8); ctx.lineTo(W / 2, panelsH - 8); ctx.stroke(); }
 
     const dGeo = PHYS.dVie(P[0][0], P[0][1], P[1][0], P[1][1]), dCh = PHYS.vieLengthPath(lp);
     mG.val.textContent = fmt(dGeo); mC.val.textContent = fmt(dCh);
     mS.val.textContent = Math.max(0, Math.round(100 * (1 - dGeo / dCh))) + ' %';
     mK.val.textContent = fmt(PHYS.curvE0(2, 1));
-    texte(ctx, '● equal-cost steps crowd toward the boundary', 6, Hp - 6, C.energie, 9, 'left', false);
-    texte(ctx, 'drag a belief (either panel)', W - 6, Hp - 6, C.encre2, 9, 'right', false);
+    rP.val.textContent = Math.round(clamp(bead, 0, 1) * 100) + ' %';
+    texte(ctx, '● equal-cost steps crowd toward the boundary', 6, panelsH - 6, C.energie, 9, 'left', false);
+    texte(ctx, 'drag a belief (either panel)', W - 6, panelsH - 6, C.encre2, 9, 'right', false);
+
+    drawStrip(ctx, W, panelsH, STRIP_H, gp, lp);
   }
 
   reg(cv, draw);
   const vid = (root.closest('section[id]') || {}).id || 'geometry';
   observe(vid);
   anim(vid, () => {
-    if (motion.ok) { bead += 0.0045 * beadDir; if (bead > 1) { bead = 1; beadDir = -1; } if (bead < 0) { bead = 0; beadDir = 1; } }
+    if (!(playing && motion.ok)) return;              // paused / reduced-motion: redraws come from input
+    bead += 0.0045 * beadDir; if (bead > 1) { bead = 1; beadDir = -1; } if (bead < 0) { bead = 0; beadDir = 1; }
+    rP.input.value = bead;
     draw();
   });
+  draw();
   return { redraw: draw };
 }

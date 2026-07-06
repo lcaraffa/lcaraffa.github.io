@@ -58,13 +58,20 @@
     <section id="geometry" class="teaser">
       <div class="fig"><div data-fig="geometry" role="img" aria-label="Interactive figure: the hyperbolic geometry of belief, shown as a Poincaré disk and a (mu, sigma) half-plane. Certainty lies on the infinitely distant boundary; the cheapest change of mind is a curved geodesic. Drag a belief in either model."></div></div>
       <p class="fig-lead">
-        <b>Two postulates, one hyperbolic geometry.</b> A belief is a point in the
-        <span data-tex="(\mu,\sigma)"></span> plane — its mean <span data-tex="\mu"></span> and width
-        <span data-tex="\sigma"></span>; certainty is the boundary <span data-tex="\sigma\to0"></span>.
-        Cost is a price on transport,
-        and the price is uniform — so this space is <em>hyperbolic</em> (negatively curved, saddle-like):
-        certainty sits at infinite
-        cost-distance (the boundary <span data-tex="\partial_\infty"></span>), and the cheapest change of mind is a geodesic, not a straight line.
+        <b>Two postulates, one hyperbolic geometry.</b> A belief is a probability distribution over the
+        world — here a Gaussian bell, a point <span data-tex="(\mu,\sigma)"></span> in the plane: its centre
+        <span data-tex="\mu"></span> is the best guess, its width <span data-tex="\sigma"></span> the
+        uncertainty. Certainty (<span data-tex="\sigma\to0"></span>, a perfect spike) is the boundary
+        <span data-tex="\partial_\infty"></span> — and it sits at <em>infinite</em> cost-distance
+        (the space is <em>hyperbolic</em>: negatively curved, saddle-like), so it can never quite be reached.
+      </p>
+      <p class="fig-lead">
+        Changing your mind is not a move but a <em>reshaping</em> of that bell, and its cost is a length,
+        in nats. Watch the strip beneath the two panels: to get from <span data-tex="p_0"></span> to
+        <span data-tex="p_1"></span> the cheapest way, the bell first <b>opens up</b> — accepts more
+        uncertainty — slides across, then <b>re-tightens</b> (the violet geodesic). The straight route
+        (blue chord) refuses to open up — it slides the bell straight across instead — and costs more. The
+        cheapest change of mind is a detour through doubt.
         <span style="white-space:nowrap">Drag a belief in either model.</span>
       </p>
     </section>
