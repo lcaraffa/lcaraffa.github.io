@@ -27,7 +27,7 @@ export function mountGeometry(root) {
   let bead = 0, beadDir = 1;                       // ambient traveler along the geodesic (cost-fraction)
 
   const cv = el('canvas', { height: 380 + STRIP_H, tabindex: '0',
-    'aria-label': 'The same beliefs in two models of one hyperbolic leaf (Poincaré half-plane and disk), and a strip showing the belief itself — a Gaussian bell — along each route: the geodesic opens up then re-tightens, the straight chord keeps its width.' });
+    'aria-label': 'The same beliefs in two models of one hyperbolic leaf (Poincaré half-plane and disk), and a strip showing the belief itself — a Gaussian bell — along each route: the geodesic opens up then re-tightens, the straight chord never opens up.' });
   const stage = el('div', { class: 'stage' }, [cv]);
   root.appendChild(stage);
 
@@ -92,7 +92,7 @@ export function mountGeometry(root) {
   /* cost cumulative along a (μ,σ) polyline — 2·d_hyp is the exact metric length element */
   const segCost = (a, b) => 2 * PHYS.dHyp(a[0], a[1], b[0], b[1]);
   const cumOf = pts => { const c = [0]; for (let i = 1; i < pts.length; i++) c[i] = c[i - 1] + segCost(pts[i - 1], pts[i]); return c; };
-  const atFrac = (pts, cum, f) => { const t = cum[cum.length - 1] * f; let i = 1; while (i < cum.length && cum[i] < t) i++; return pts[Math.min(i, pts.length - 1)]; };
+  const atFrac = (pts, cum, f) => { if (f <= 0) return pts[0]; const t = cum[cum.length - 1] * f; let i = 1; while (i < cum.length && cum[i] < t) i++; return pts[Math.min(i, pts.length - 1)]; };
 
   function overlay(ctx, pfn, gp, lp) {
     const path = (pts, col, lw, dash) => { ctx.save(); if (dash) ctx.setLineDash(dash); ctx.beginPath();
@@ -108,9 +108,11 @@ export function mountGeometry(root) {
     // ambient bead (constant cost-speed) — the traveler
     if (total > 0) { const pb = atFrac(gp, cum, bead), q = pfn(pb[0], pb[1]);
       ctx.beginPath(); ctx.arc(q.x, q.y, 4, 0, 7); ctx.fillStyle = C.energie; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); }
-    // apex "open up"
+    // apex "open up" — only when the geodesic actually bulges above both endpoints
     let apex = gp[0]; gp.forEach(p => { if (p[1] > apex[1]) apex = p; });
-    const qa = pfn(apex[0], apex[1]); texte(ctx, '↑ open up', qa.x, qa.y - 7, C.soudure, 9.5, 'center', false);
+    if (apex[1] > Math.max(gp[0][1], gp[gp.length - 1][1]) + 0.03) {
+      const qa = pfn(apex[0], apex[1]); texte(ctx, '↑ open up', qa.x, qa.y - 7, C.soudure, 9.5, 'center', false);
+    }
     // the two beliefs
     [[0, C.soudure, 'p₀'], [1, C.info, 'p₁']].forEach(([i, col, lab]) => { const q = pfn(P[i][0], P[i][1]);
       ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, 7); ctx.fillStyle = col; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
@@ -182,10 +184,13 @@ export function mountGeometry(root) {
     const bellH = 40, kCur = Math.round(clamp(bead, 0, 1) * (NF - 1));
 
     ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(6, y0 + 2.5); ctx.lineTo(W - 6, y0 + 2.5); ctx.stroke();
-    texte(ctx, 'the belief itself, along each route — the framed bell is where the traveler is now', 6, y0 + 15, C.encre2, 10, 'left', false);
+    texte(ctx, 'the belief itself, along each route — the orange frame marks the same stage (equal cost) on both routes', 6, y0 + 15, C.encre2, 10, 'left', false);
 
+    const geoMaxS = Math.max(...geo.map(p => p[1])), geoEndS = Math.max(geo[0][1], geo[NF - 1][1]);
     const rows = [
-      { st: geo, col: C.soudure, capY: y0 + 30, cap: 'geodesic — the belief opens up (accepts more uncertainty), then re-tightens' },
+      { st: geo, col: C.soudure, capY: y0 + 30, cap: geoMaxS > geoEndS + 0.03
+        ? 'geodesic — the belief opens up (accepts more uncertainty), then re-tightens'
+        : "geodesic — the belief's width shifts along the way (not a straight slide)" },
       { st: cho, col: C.info, capY: y0 + 30 + 6 + bellH + 12, cap: 'straight chord — the belief never opens up (never wider than the two ends)' },
     ];
     rows.forEach(({ st, col, capY, cap }) => {
@@ -206,7 +211,7 @@ export function mountGeometry(root) {
       });
     });
     const axisY = y0 + 30 + 6 + bellH + 12 + 6 + bellH + 12;
-    texte(ctx, '→ the world (the value the belief is about) · a wider bell = more uncertainty · the area (total probability) is always 1',
+    texte(ctx, 'each bell is a distribution over the world, drawn centred so the widths compare · a wider bell = more uncertainty · the area (probability) is always 1',
       padX, Math.min(axisY, y0 + H - 4), C.encre2, 8.5, 'left', false);
   }
 
