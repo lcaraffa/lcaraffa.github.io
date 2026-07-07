@@ -444,10 +444,16 @@ export function mountDT(root) {
           ctx.strokeRect(bx + 0.5, ry + 1, bw - 3, rh - 4); }
         ctx.strokeStyle = col + (k === 0 || k === st.length - 1 ? 'FF' : '99'); ctx.lineWidth = 1.1;
         ctx.beginPath();
-        for (let px = 0; px <= bw - 4; px += 1) {
-          const x = xlo + (px / (bw - 4)) * (xhi - xlo);
-          const Y = ry + rh - 3 - (PHYS.pdf(x, p[0], p[1]) / peakMax) * (rh - 6);
-          px === 0 ? ctx.moveTo(bx + 2 + px, Y) : ctx.lineTo(bx + 2 + px, Y);
+        // sample each bell over its OWN support [μ-4σ, μ+4σ] (so the sharp peak x=μ is always
+        // captured) mapped to the shared-window screen X — fixes the fixed-pixel-grid aliasing
+        // that made narrow constant-σ bells' heights oscillate; the bells still sit at their μ.
+        const mu = p[0], sg = p[1], N = 48;
+        const lo = Math.max(xlo, mu - 4 * sg), hi = Math.min(xhi, mu + 4 * sg);
+        for (let i = 0; i <= N; i++) {
+          const x = lo + (i / N) * (hi - lo);
+          const sx = ((x - xlo) / (xhi - xlo)) * (bw - 4);
+          const Y = ry + rh - 3 - (PHYS.pdf(x, mu, sg) / peakMax) * (rh - 6);
+          i === 0 ? ctx.moveTo(bx + 2 + sx, Y) : ctx.lineTo(bx + 2 + sx, Y);
         }
         ctx.stroke();
       });

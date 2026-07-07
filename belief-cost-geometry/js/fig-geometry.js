@@ -215,9 +215,13 @@ export function mountGeometry(root) {
         ctx.strokeStyle = cur ? col : col + (k === 0 || k === st.length - 1 ? 'CC' : '80');
         ctx.lineWidth = cur ? 1.7 : 1;
         ctx.beginPath();
-        const N = 40;
-        for (let i = 0; i <= N; i++) { const x = xlo + (i / N) * (xhi - xlo);
-          const X = bx + 2 + (i / N) * (bw - 4), Y = baseY - (npdf(x, p[0], p[1]) / peakMax) * (rh - 18);
+        // sample each bell over its OWN support [μ-4σ, μ+4σ] (so the sharp peak x=μ is always
+        // captured) and map to the shared-window screen X — this avoids the fixed-grid aliasing
+        // that made narrow bells' heights oscillate; the bells still sit at their μ.
+        const mu = p[0], sg = p[1], N = 48;
+        const lo = Math.max(xlo, mu - 4 * sg), hi = Math.min(xhi, mu + 4 * sg);
+        for (let i = 0; i <= N; i++) { const x = lo + (i / N) * (hi - lo);
+          const X = bx + 2 + ((x - xlo) / (xhi - xlo)) * (bw - 4), Y = baseY - (npdf(x, mu, sg) / peakMax) * (rh - 18);
           i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }
         ctx.stroke();
       });
