@@ -77,24 +77,25 @@
       <p>A belief is a probability density, and changing it has a cost. This project turns that cost into a
         geometry: the cost of moving from one belief to another is a distance, built from optimal transport
         (the least effort to reshape one density into another) reweighted by Fisher information (the
-        sharpness of the belief). Two modest assumptions fix it: revision cost is a scalar price on
-        transport, and that price is uniform, with one nat costing the same length everywhere. On the
-        Gaussian beliefs, indexed by a mean and a width, the geometry is explicit, and four consequences
-        follow.</p>
+        sharpness of the belief). The framework holds for any probability density, and rests on two modest
+        assumptions: revision cost is a scalar price on transport, and that price is uniform, with one nat
+        costing the same length everywhere.</p>
+      <p class="abs-group">For any belief:</p>
       <ul class="abstract-list">
-        <li><b>Certainty lies at infinite cost-distance.</b> The cost diverges as
-          <span data-tex="\sigma\to0"></span>, so every belief the agent reaches keeps a positive
-          width.</li>
+        <li><b>Certainty lies at infinite cost-distance.</b> Every belief the agent reaches keeps a
+          positive width.</li>
         <li><b>Uniform pricing selects Fisher information.</b> Requiring the same price per nat everywhere
           is equivalent to reweighting transport by the Fisher information
           (<span data-tex="U=cJ"></span>).</li>
-        <li><b>The geometry is hyperbolic, and the Gaussian is its extreme case.</b> On the location-scale
-          family (a mean and a width) the curvature is negative and constant; the Stam bound
-          (<span data-tex="J_0\ge1"></span>) makes the Gaussian the most curved belief
-          (<span data-tex="K=-\tfrac14"></span>).</li>
-        <li><b>Distances are pure information, in nats.</b> The units of optimal transport and of Fisher
-          information cancel, so distances depend only on information content, the same in any units used
-          to measure the world.</li>
+        <li><b>Distances are dimensionless, measured in nats.</b> The units of optimal transport and of
+          Fisher information cancel, so distances do not depend on the units used for the world.</li>
+      </ul>
+      <p class="abs-group">On the Gaussian (location-scale) family, indexed by a mean and a width:</p>
+      <ul class="abstract-list">
+        <li><b>The geometry is hyperbolic, and the Gaussian is its extreme case.</b> The curvature is
+          negative and constant, and the Stam bound (<span data-tex="J_0\ge1"></span>) makes the Gaussian
+          the most curved belief (<span data-tex="K=-\tfrac14"></span>). The curvature of a general belief
+          is left open.</li>
       </ul>
     </section>
 
