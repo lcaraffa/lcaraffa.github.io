@@ -21,29 +21,29 @@ const S = {
   aria: 'A fixed field, a fixed sensor pool; the kriging belief on the left, the scalar slice in belief space on the right. Two regimes: learn, revise.',
   tabLearn: 'Learn (n)', tabRevise: 'Revise (two campaigns)',
   n: 'evidence looked at n (a label)', sobs: 'sensor noise s', ell: 'prior range ℓ', x0: 'scalar readout x₀',
-  pin: 'Pin photo A', unpin: 'Unpin A', truth: 'reveal h★', resample: 'Another dataset',
+  pin: 'Pin posterior A', unpin: 'Unpin A', truth: 'reveal h★', resample: 'Another dataset',
   shuffle: 'Shuffle the order',
-  pField: 'the field C — belief = kriging m(x) ± 2σ(x)',
-  pFieldRev: 'the field C — two campaigns (declared calibration offset: +0.45 m)',
-  pPlane: 'belief space — the scalar slice at x₀',
-  pPlaneRev: 'belief space — revising between two confident surveys',
+  pField: 'the field C: kriging belief m(x) ± 2σ(x)',
+  pFieldRev: 'the field C: two campaigns (declared calibration offset: +0.45 m)',
+  pPlane: 'belief space: the scalar slice at x₀',
+  pPlaneRev: 'belief space: revising between two confident surveys',
   boundary: 'σ = 0 · certainty at infinite cost-distance',
-  used: 'read (n)', unused: 'in the pool, unread — the whole dataset is already there',
-  static: 'n is a label: two photos, one distance',
+  used: 'read (n)', unused: 'in the pool, unread (all data present)',
+  static: 'n is a label: two posteriors, one distance',
   staticRev: 'two simultaneous surveys of one fixed field: d(A,B) = d(B,A)',
-  photo: 'photo n', photoA: 'A (n=', prior: 'photo 0 · prior',
+  photo: 'posterior n', photoA: 'A (n=', prior: 'posterior 0 · prior',
   double: 'rings n=5,10,20,40: doubling the evidence ≈ a constant step · ● = 1 nat',
-  threadLeg: 'orange = drip-fed (one sensor order) · violet = in one go',
+  threadLeg: 'orange = one sensor at a time · violet = in one go',
   orderCap: 'shuffle the order: the endpoints hold still',
   legendRev: 'violet = cheapest (Gaussian leaf) · dashed = W₂ chord · ● = 1 nat',
-  open: 'open up',
+  open: 'widens',
   campA: 'campaign 2 · A', campB: 'campaign 1 · B',
-  truthLab: 'h★ — the real field, fixed',
-  stripGeo: 'geodesic', stripChord: 'W₂ chord', stripN: 'stills',
-  stripCap: 'contact sheet: one intermediate belief per nat of route — the cheap route spends its nats opening up, and needs fewer of them',
+  truthLab: 'h★: the real field, fixed',
+  stripGeo: 'geodesic', stripChord: 'W₂ chord', stripN: 'beliefs',
+  stripCap: 'one belief per nat of route; the cheaper route widens the belief and needs fewer',
   bud: 'budget spent b (nats)', arrived: 'arrived',
-  mSig: 'σ(x₀) =', mStep: 'cost photo n−1→n =', mAB: 'd(A→B) = d(B→A) =', mJ: 'whole field Σₖ J(xₖ) =',
-  mPath: 'drip-fed: n legs end to end =', mDirect: 'in one go (direct 0→n) =',
+  mSig: 'σ(x₀) =', mStep: 'cost posterior n−1→n =', mAB: 'd(A→B) = d(B→A) =', mJ: 'whole field Σₖ J(xₖ) =',
+  mPath: 'one at a time: n legs end to end =', mDirect: 'in one go (direct 0→n) =',
   mGeo: 'cheapest revision =', mCh: 'W₂ chord =', mSav: 'saved =', mFloor: 'entropy floor √(2c)|ΔH| =',
   mBud: 'equal spend, remaining:',
 };
@@ -435,7 +435,7 @@ export function mountDT(root) {
     texte(ctx, S.stripCap, 6, y0 + 9, C.encre2, 9, 'left', false);
     rows.forEach(([lab, st, total, col], ri) => {
       const ry = y0 + 14 + ri * rh;
-      texte(ctx, lab + ' · ' + st.length + ' ' + S.stripN + ' (' + fmt(total, 1) + ' nats)', 6, ry + rh / 2 + 3, col, 9, 'left', false);
+      texte(ctx, lab + ' · ' + fmt(total, 1) + ' nats', 6, ry + rh / 2 + 3, col, 9, 'left', false);
       const bw = Math.min(40, (W - labW - 8) / st.length);
       const curK = bud > 0 ? Math.min(Math.floor(Math.min(bud, total)), st.length - 1) : -1;
       st.forEach((p, k) => {

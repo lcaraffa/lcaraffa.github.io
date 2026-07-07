@@ -97,6 +97,18 @@ section li { margin: 0 0 .6rem; font-size: .95rem; line-height: 1.6; }
 .caption b { color: var(--ink); font-weight: 650; }
 .figerr { color: var(--energy); font: 13px var(--mono); padding: 20px; }
 
+/* collapsible step-by-step legend (native <details>) */
+.legend-list { margin: 1rem 0 .5rem; }
+.legend-list details { border: 1px solid var(--line); border-radius: 9px; background: var(--surface); margin: 0 0 .5rem; overflow: hidden; }
+.legend-list summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: .55rem;
+  padding: .6rem .9rem; font-weight: 650; color: var(--fg); user-select: none; }
+.legend-list summary::-webkit-details-marker { display: none; }
+.legend-list summary::before { content: "▸"; color: var(--muted); font-size: .8em; transition: transform .15s ease; }
+.legend-list details[open] > summary::before { transform: rotate(90deg); }
+.legend-list summary:hover { background: var(--surface-2); }
+.legend-list details[open] > summary { border-bottom: 1px solid var(--line); }
+.legend-list details > p { margin: 0; padding: .7rem .95rem .85rem; font-size: .92rem; line-height: 1.6; color: var(--ink-2); }
+
 .controls { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; margin: .75rem .2rem 0; }
 .ctl { display: flex; align-items: center; gap: 8px; font: 500 12.5px/1 var(--mono); color: var(--ink-2); }
 .sl-lab { white-space: nowrap; }
@@ -123,6 +135,19 @@ input[type=range].sl-energie::-moz-range-thumb { background: var(--energy); }
   background: var(--surface-2); border-radius: 8px; padding: 1rem 1.15rem; margin: 1.1rem 0 0;
   font-style: italic; color: var(--ink); text-align: left;
 }
+
+/* highlighted key result (dimensionless metric / nats) */
+.keybox {
+  border: 1px solid var(--hair); border-left: 4px solid var(--belief);
+  background: var(--surface-2); border-radius: 8px; padding: 1rem 1.2rem; margin: 1.5rem 0 .5rem;
+}
+.keybox p { margin: 0; font-size: .96rem; line-height: 1.66; color: var(--ink); text-align: left; }
+.keybox strong { color: var(--belief); }
+
+/* abstract: headline results as a marked list */
+.abstract-list { list-style: none; padding: 0; margin: 1rem 0 0; }
+.abstract-list li { position: relative; padding-left: 1.15rem; margin: .55rem 0; font-size: .98rem; line-height: 1.6; color: var(--ink); text-align: left; }
+.abstract-list li::before { content: "\203A"; position: absolute; left: .15rem; color: var(--belief); font-weight: 700; }
 
 /* ---- card grids -------------------------------------------------------- */
 .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }

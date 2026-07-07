@@ -28,7 +28,7 @@ export function mountGeometry(root) {
   let dGeoCur = 1, dChCur = 1;                      // current route totals (updated in draw)
 
   const cv = el('canvas', { height: 380 + STRIP_H, tabindex: '0',
-    'aria-label': 'The same beliefs in two models of one hyperbolic leaf (Poincaré half-plane and disk); two travelers spend the same budget of nats, and the geodesic one arrives before the chord one, so the chord costs more. Below, a contact sheet shows the belief itself — a Gaussian bell — one snapshot per nat along each route: the geodesic opens up then re-tightens, the chord only slides and needs about twice as many snapshots.' });
+    'aria-label': 'The same beliefs in two models of one hyperbolic leaf (Poincaré half-plane and disk). Two travelers spend the same budget of nats; the geodesic one arrives before the chord one, so the chord costs more. Below, a strip shows the belief (a Gaussian) one snapshot per nat along each route: the geodesic widens then re-narrows; the chord only slides and needs about twice as many snapshots.' });
   const stage = el('div', { class: 'stage' }, [cv]);
   root.appendChild(stage);
 
@@ -97,7 +97,7 @@ export function mountGeometry(root) {
   const atCost = (pts, cum, c) => atFrac(pts, cum, cum[cum.length - 1] > 0 ? c / cum[cum.length - 1] : 0);
   const npdf = (x, m, s) => Math.exp(-0.5 * ((x - m) / s) ** 2) / (s * Math.sqrt(2 * Math.PI));
 
-  function overlay(ctx, pfn, gp, lp, cumG, cumL) {
+  function overlay(ctx, pfn, gp, lp, cumG, cumL, coords) {
     const path = (pts, col, lw, dash) => { ctx.save(); if (dash) ctx.setLineDash(dash); ctx.beginPath();
       pts.forEach((p, i) => { const q = pfn(p[0], p[1]); i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y); });
       ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.stroke(); ctx.restore(); };
@@ -110,7 +110,7 @@ export function mountGeometry(root) {
     // apex "open up" — only when the geodesic actually bulges above both endpoints
     let apex = gp[0]; gp.forEach(p => { if (p[1] > apex[1]) apex = p; });
     if (apex[1] > Math.max(gp[0][1], gp[gp.length - 1][1]) + 0.03) {
-      const qa = pfn(apex[0], apex[1]); texte(ctx, '↑ open up', qa.x, qa.y - 7, C.soudure, 9.5, 'center', false);
+      const qa = pfn(apex[0], apex[1]); texte(ctx, '↑ widens', qa.x, qa.y - 7, C.soudure, 9.5, 'center', false);
     }
     // two travelers, same budget of nats: white disc rimmed in its route's colour
     const traveler = (pts, cum, tot, ring) => {
@@ -121,10 +121,14 @@ export function mountGeometry(root) {
     };
     traveler(lp, cumL, cumL[cumL.length - 1], C.info);
     traveler(gp, cumG, total, C.soudure);
-    // the two beliefs
+    // the two beliefs — with their μ, σ read out on the half-plane, where the axes ARE μ and σ
     [[0, C.soudure, 'p₀'], [1, C.info, 'p₁']].forEach(([i, col, lab]) => { const q = pfn(P[i][0], P[i][1]);
       ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, 7); ctx.fillStyle = col; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
-      texte(ctx, lab, q.x + 7, q.y - 6, col, 11, 'left', false); });
+      if (coords) {
+        const rs = P[i][0] >= 0, tx = q.x + (rs ? -8 : 8), al = rs ? 'right' : 'left';
+        texte(ctx, lab, tx, q.y - 5, col, 11, al, false);
+        texte(ctx, 'μ=' + fmt(P[i][0]) + ' · σ=' + fmt(P[i][1]), tx, q.y - 16, C.encre2, 8, al, false);
+      } else { texte(ctx, lab, q.x + 7, q.y - 6, col, 11, 'left', false); } });
   }
 
   function drawHalf(ctx, r, gp, lp, cumG, cumL) {
@@ -134,10 +138,15 @@ export function mountGeometry(root) {
     ctx.strokeStyle = C.grille; ctx.lineWidth = 1;
     [0.5, 1, 2, 3].forEach(s => { const y = Yh(r, s); ctx.beginPath(); ctx.moveTo(Xh(r, -MU), y); ctx.lineTo(Xh(r, MU), y); ctx.stroke();
       texte(ctx, 'σ=' + s, Xh(r, -MU) + 2, y - 3, C.encre2, 8.5, 'left', false); });
+    // μ (the mean) — abscissa: vertical gridlines + ticks below the boundary
+    [-2, 0, 2].forEach(m => { const x = Xh(r, m); ctx.strokeStyle = C.grille; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, Yh(r, SMAX)); ctx.lineTo(x, Yh(r, 0)); ctx.stroke();
+      texte(ctx, m === 0 ? 'μ=0' : (m > 0 ? '+' + m : String(m)), x, Yh(r, 0) + 11, C.encre2, 8, 'center', false); });
+    texte(ctx, 'μ = mean →', Xh(r, MU) - 2, Yh(r, 0) + 11, C.encre2, 8, 'right', false);
     const yb = Yh(r, 0); ctx.strokeStyle = C.encre; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(Xh(r, -MU), yb); ctx.lineTo(Xh(r, MU), yb); ctx.stroke();
     texte(ctx, 'the boundary ∂∞ · certainty σ=0 (infinite cost-distance)', r.x + r.w / 2, yb - 5, C.encre2, 9.5, 'center', false);
-    overlay(ctx, (m, s) => ({ x: Xh(r, m), y: Yh(r, s) }), gp, lp, cumG, cumL);
-    texte(ctx, 'half-plane — the boundary is the bottom edge', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
+    overlay(ctx, (m, s) => ({ x: Xh(r, m), y: Yh(r, s) }), gp, lp, cumG, cumL, true);
+    texte(ctx, 'half-plane: the boundary is the bottom edge', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
     ctx.restore();
   }
 
@@ -170,8 +179,8 @@ export function mountGeometry(root) {
     ctx.beginPath(); ctx.moveTo(d.cx - d.R, d.cy); ctx.lineTo(d.cx + d.R, d.cy); ctx.stroke(); ctx.setLineDash([]);
     ctx.beginPath(); ctx.arc(d.cx, d.cy, 2.5, 0, 7); ctx.fillStyle = C.encre2; ctx.fill();
     texte(ctx, 'N(0,1)', d.cx + 6, d.cy - 5, C.encre2, 8.5, 'left', false);
-    overlay(ctx, (m, s) => toDisk(d, m, s), gp, lp, cumG, cumL);
-    texte(ctx, 'disk — the boundary = infinity', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
+    overlay(ctx, (m, s) => toDisk(d, m, s), gp, lp, cumG, cumL, false);
+    texte(ctx, 'disk: the boundary = infinity', r.x + 6, r.y + 14, C.encre2, 10.5, 'left', false);
     texte(ctx, 'boundary at infinity ∂∞ = certainty', d.cx, d.cy + d.R + 13, C.encre2, 9, 'center', false);
     ctx.restore();
   }
@@ -195,16 +204,16 @@ export function mountGeometry(root) {
     const geoBulges = Math.max(...stG.map(p => p[1])) > Math.max(stG[0][1], stG[stG.length - 1][1]) + 0.03;
 
     ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(6, y0 + 2.5); ctx.lineTo(W - 6, y0 + 2.5); ctx.stroke();
-    texte(ctx, 'the belief itself — one snapshot per nat of cost. The straight chord needs about twice as many snapshots: it costs more.', 6, y0 + 14, C.encre2, 9.5, 'left', false);
+    texte(ctx, 'the belief along each route, one snapshot per nat of cost. The straight chord needs about twice as many, so it costs more.', 6, y0 + 14, C.encre2, 9.5, 'left', false);
 
     const rows = [
-      { st: stG, col: C.soudure, total: dGeo, lab: geoBulges ? 'geodesic · opens up' : 'geodesic' },
-      { st: stL, col: C.info, total: dCh, lab: 'chord · never opens up' },
+      { st: stG, col: C.soudure, total: dGeo, lab: geoBulges ? 'geodesic · widens' : 'geodesic' },
+      { st: stL, col: C.info, total: dCh, lab: 'chord · width fixed' },
     ];
     rows.forEach(({ st, col, total, lab }, ri) => {
       const ry = y0 + 22 + ri * rh, baseY = ry + rh - 8;
       texte(ctx, lab, 6, ry + 13, col, 9, 'left', false);
-      texte(ctx, st.length + ' bells · ' + fmt(total, 1) + ' nats', 6, ry + 25, C.encre2, 8.5, 'left', false);
+      texte(ctx, fmt(total, 1) + ' nats', 6, ry + 25, C.encre2, 8.5, 'left', false);
       const bw = Math.min(40, (W - labW - 8) / st.length);
       const curK = Math.min(Math.round(bud), st.length - 1);
       // row baseline (its length shows the route's cost)

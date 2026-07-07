@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="title" content="A Transport-Based Geometry of Belief-Cost — Laurent Caraffa">
-  <meta name="description" content="A finite agent cannot hold a perfect twin of the world. From two postulates — cost is a price on transport, and the price is uniform — a hyperbolic geometry of belief follows, with certainty at infinite cost-distance.">
+  <meta name="title" content="A Transport-Based Geometry of Belief-Cost · Laurent Caraffa">
+  <meta name="description" content="A finite agent observes the world through noisy sensors, so its belief is a probability density, not a point. From two postulates (cost is a price on transport; the price is uniform), a hyperbolic geometry of belief follows, with certainty at infinite cost-distance.">
   <meta name="keywords" content="belief-cost geometry, optimal transport, Wasserstein, Fisher information, Bayesian inference, information geometry, entropy, thermodynamics of computation, Stam inequality">
   <meta name="author" content="Laurent Caraffa">
 
@@ -20,7 +20,7 @@
   <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2606.21585">
   <meta name="theme-color" content="#11131a">
 
-  <title>A Transport-Based Geometry of Belief-Cost — Laurent Caraffa</title>
+  <title>A Transport-Based Geometry of Belief-Cost · Laurent Caraffa</title>
   <link rel="icon" href="../assets/favicon.svg">
 
   <link rel="stylesheet" href="vendor/katex/katex.min.css">
@@ -37,7 +37,7 @@
     <noscript>
       <p style="padding:.75rem 1rem;border:1px solid currentColor;border-radius:.4rem;margin:0 0 1.2rem">
         This page renders its equations (KaTeX) and its interactive figures with JavaScript. With
-        JavaScript disabled, the formulas and the three figures will not appear — see the linked
+        JavaScript disabled, the formulas and the three figures will not appear; see the linked
         paper (pdf) for the full derivations.</p>
     </noscript>
     <p class="back"><a href="../"><span class="prompt">~/</span>projects</a></p>
@@ -56,167 +56,181 @@
 
     <!-- the geometry (headline figure) -->
     <section id="geometry" class="teaser">
-      <div class="fig"><div data-fig="geometry" role="img" aria-label="Interactive figure: the hyperbolic geometry of belief, shown as a Poincaré disk and a (mu, sigma) half-plane. Certainty lies on the infinitely distant boundary; the cheapest change of mind is a curved geodesic. A strip below shows the belief — a Gaussian bell — reshaping along each route: on the geodesic it opens up then re-tightens, on the chord it only slides. Drag a belief in either model."></div></div>
+      <div class="fig"><div data-fig="geometry" role="img" aria-label="Interactive figure: the hyperbolic geometry of belief, shown as a Poincaré disk and a (mu, sigma) half-plane. Certainty lies on the infinitely distant boundary; the cheapest revision is a curved geodesic. A strip below shows the belief (a Gaussian) reshaping along each route: on the geodesic it widens then re-narrows; on the chord it only slides. Drag a belief in either model."></div></div>
       <p class="fig-lead">
         <b>Two postulates, one hyperbolic geometry.</b> A belief is a probability distribution over the
-        world — here a Gaussian bell, a point <span data-tex="(\mu,\sigma)"></span> in the plane: its centre
-        <span data-tex="\mu"></span> is the best guess, its width <span data-tex="\sigma"></span> the
-        uncertainty. Certainty (<span data-tex="\sigma\to0"></span>, a perfect spike) is the boundary
-        <span data-tex="\partial_\infty"></span> — and it sits at <em>infinite</em> cost-distance
-        (the space is <em>hyperbolic</em>: negatively curved, saddle-like), so it can never quite be reached.
-      </p>
-      <p class="fig-lead">
-        Changing your mind is not a move but a <em>reshaping</em> of that bell, and its cost is a length,
-        in nats. Watch the strip beneath the two panels: to get from <span data-tex="p_0"></span> to
-        <span data-tex="p_1"></span> the cheapest way, the bell first <b>opens up</b> — accepts more
-        uncertainty — slides across, then <b>re-tightens</b> (the violet geodesic). The straight route
-        (blue chord) refuses to open up — it slides the bell straight across instead — and costs more. The
-        cheapest change of mind is a detour through doubt.
+        world, here a Gaussian: a point <span data-tex="(\mu,\sigma)"></span> with mean
+        <span data-tex="\mu"></span> and width <span data-tex="\sigma"></span>. Certainty
+        (<span data-tex="\sigma\to0"></span>) is the boundary <span data-tex="\partial_\infty"></span> and
+        sits at infinite cost-distance, so it stays out of reach; the space has negative (hyperbolic)
+        curvature. Changing a belief reshapes the Gaussian, at a cost measured as a length in nats (the
+        base-e unit of information). The
+        strip below the two panels shows the belief along each route from <span data-tex="p_0"></span> to
+        <span data-tex="p_1"></span>: the geodesic (violet) widens the Gaussian then re-narrows it; the
+        straight chord (blue) keeps the width fixed and costs more.
         <span style="white-space:nowrap">Drag a belief in either model.</span>
       </p>
     </section>
 
-    <section>
+    <section id="abstract">
       <h2>Abstract</h2>
-      <p>A finite machine's digital twin observes the territory only through finite, noisy sensors; we
-        model its coherent output as a <em>belief</em> — a probability density over states, the Bayes
-        posterior, never a point. Certainty — the perfect twin — is denied twice, by observation and by
-        physics, both read off the Fisher information. To make this finiteness geometric — distances, a
-        boundary, a curvature — we model what it costs to <em>change</em> a belief: a
-        <em>belief-cost geometry</em>, optimal transport in Wasserstein space reweighted conformally by
-        Fisher information.</p>
-      <p>The framework rests on <strong>two posed commitments</strong>: that revision cost is a
-        <em>scalar price on transport</em> (the arena), and that the price is <em>uniform</em> — one nat
-        (a unit of information — the base-e cousin of the bit) costs the same length everywhere. Uniform pricing selects the Fisher reweighting because transport
-        <em>demotes</em> Fisher information from the ruler of distinguishability to the slope of entropy
-        — the move that sets transport apart from Fisher–Rao. From the two postulates, three results
-        follow on the conformal (essentially location-scale) class, all invariants of one change of cost
-        unit: a <strong>boundary at infinite cost-distance</strong> (certainty rejected to infinity), the
-        <strong>Fisher family</strong> (<span data-tex="U=cJ"></span>, the characterization of the second
-        postulate), and a <strong>rigidity</strong> (these geometries are hyperbolic, and the Stam bound
-        crowns the Gaussian). Thermodynamics fixes the cost unit and motivates the framework; the results
-        are geometric, in nats.</p>
-      <div class="problembox">
-        <strong>The problem.</strong> Characterize the geometry of the space of beliefs a finite agent —
-        inferring a fixed, noisy world through finite sensors — can inhabit: its <em>distances</em> (the
-        cost of changing one's mind), its <em>boundary</em> (certainty), and its <em>curvature</em>.
-      </div>
+      <p>A belief is a probability density, and changing it has a cost. This project turns that cost into a
+        geometry: the cost of moving from one belief to another is a distance, built from optimal transport
+        (the least effort to reshape one density into another) reweighted by Fisher information (the
+        sharpness of the belief). Two modest assumptions fix it: revision cost is a scalar price on
+        transport, and that price is uniform, with one nat costing the same length everywhere. On the
+        Gaussian beliefs, indexed by a mean and a width, the geometry is explicit, and four consequences
+        follow.</p>
+      <ul class="abstract-list">
+        <li><b>Certainty lies at infinite cost-distance.</b> The cost diverges as
+          <span data-tex="\sigma\to0"></span>, so every belief the agent reaches keeps a positive
+          width.</li>
+        <li><b>Uniform pricing selects Fisher information.</b> Requiring the same price per nat everywhere
+          is equivalent to reweighting transport by the Fisher information
+          (<span data-tex="U=cJ"></span>).</li>
+        <li><b>The geometry is hyperbolic, and the Gaussian is its extreme case.</b> On the location-scale
+          family (a mean and a width) the curvature is negative and constant; the Stam bound
+          (<span data-tex="J_0\ge1"></span>) makes the Gaussian the most curved belief
+          (<span data-tex="K=-\tfrac14"></span>).</li>
+        <li><b>Distances are pure information, in nats.</b> The units of optimal transport and of Fisher
+          information cancel, so distances depend only on information content, the same in any units used
+          to measure the world.</li>
+      </ul>
     </section>
 
     <section id="problem">
-      <h2>A finite agent cannot hold a perfect twin</h2>
-      <p>The agent watches a hidden state only through finite, noisy sensors; its coherent output is a
-        <em>belief</em> (the Bayes posterior) — a density, never a point. Certainty is denied twice, and both
-        denials speak one language, Fisher information <span data-tex="J=1/\sigma^2"></span>: by observation
-        (Cramér–Rao — the width shrinks only as <span data-tex="\sigma_{\mathrm{obs}}/\sqrt n"></span>) and by
-        physics (Landauer — erasing one nat costs <span data-tex="\ge k_BT"></span>; certainty would cost
-        infinite energy).</p>
-      <div class="fig"><div data-fig="twin" role="img" aria-label="Interactive figure: as observations accrue the belief (a Gaussian) sharpens but never collapses to a point; the perfectly certain twin (a Dirac spike) stays excluded. Below, the two denials of certainty, both reading the Fisher information J = 1/sigma squared."></div></div>
-      <p class="caption"><b>The twofold denial of certainty.</b> The belief (violet) sharpens
-        as observations accrue, yet stays a density; the barred Dirac is the perfect twin, excluded. Below, the
-        two denials — both reading <span data-tex="J=1/\sigma^2"></span>. Drag the sliders; it replays on its own.</p>
+      <h2>A finite agent and its belief</h2>
+      <p>A finite machine observes a fixed world through noisy sensors, so its belief is a probability
+        density over states (the Bayes posterior), always keeping a positive width.</p>
+      <p>Certainty (a point mass) is ruled out by two facts, both read from the Fisher information
+        <span data-tex="J=1/\sigma^2"></span>: observation (Cramér–Rao: the width shrinks only as
+        <span data-tex="\sigma_{\mathrm{obs}}/\sqrt n"></span>) and physics (Landauer: erasing one nat
+        costs <span data-tex="\ge k_BT"></span>, so exact certainty would cost infinite energy).</p>
+      <div class="problembox">
+        <strong>The problem.</strong> Characterize the geometry of the beliefs a finite agent can hold:
+        its distances (the cost of changing one's mind), its boundary (certainty), and its curvature.
+      </div>
+      <div class="fig"><div data-fig="twin" role="img" aria-label="Interactive figure: as observations accrue the belief (a Gaussian) sharpens but keeps a positive width; the excluded point mass (a Dirac spike) is barred. Below, the two limits on certainty, both reading the Fisher information J = 1/sigma squared."></div></div>
+      <p class="caption"><b>Certainty is ruled out twice.</b> The belief (violet) sharpens as observations
+        accrue but stays a density; the barred Dirac spike is the excluded point mass. Below, the two
+        limits, both reading <span data-tex="J=1/\sigma^2"></span>. Drag the sliders.</p>
     </section>
 
     <section>
       <h2>The two postulates</h2>
-      <p>Finiteness fixes the <em>object</em> — a density, certainty excluded — but leaves the geometry
-        open. Everything below rests on exactly two posed commitments, worked out on the location-scale
-        family (the Gaussian <span data-tex="(\mu,\sigma)"></span> beliefs). Each is a choice an informed reader
-        could refuse; each is defended. Every other ingredient is forced, transparent, or borrowed.</p>
+      <p>Finiteness fixes the object (a density, certainty excluded) but leaves the geometry open.
+        Everything below rests on two postulates, stated on the location-scale family (the Gaussian
+        <span data-tex="(\mu,\sigma)"></span> beliefs). Each is a modelling choice; the rest is forced or
+        standard.</p>
       <div class="cards">
         <div class="post">
-          <span class="tag">Postulate 0 · the arena</span>
+          <span class="tag">Postulate 0 · the transport metric</span>
           <h3>Cost is a scalar price on transport</h3>
-          <p>The cost of changing a belief is a <em>scalar price field over the optimal transport</em> of
-            probability mass — a transport metric reweighted by a scalar relief <span data-tex="U"></span>
-            (a positive cost-height over belief space). It prices a revision; it does
-            not enact one (Bayes does that). A scalar times the transport metric is a <em>conformal</em>
-            reweighting (<span data-tex="e"></span> a constant cost offset, here 0;
-            <span data-tex="g_{\mathcal W_2}"></span> the transport metric itself):</p>
+          <p>The cost of changing a belief is a scalar price on the optimal transport of probability mass:
+            the transport metric <span data-tex="g_{\mathcal W_2}"></span> multiplied by a positive scalar
+            field <span data-tex="U"></span> (a cost-height over belief space). It prices a revision; Bayes
+            performs it. Multiplying a metric by a scalar is a conformal reweighting
+            (<span data-tex="e"></span> is a constant offset, here 0):</p>
           <div class="formula-center" data-tex="\tilde g \;=\; 2\,(e+U)\,\,g_{\mathcal W_2}" data-display="1"></div>
         </div>
         <div class="post">
-          <span class="tag">Postulate 1 · uniform pricing</span>
+          <span class="tag">Postulate 1 · uniform price</span>
           <h3>One nat costs the same length everywhere</h3>
-          <p>The price is <em>uniform</em> (eikonal): the metric slope of knowledge <span data-tex="-H"></span>
-            is constant across the space of beliefs. Because transport <em>demotes</em> Fisher to the slope of
-            entropy, uniform pricing singles out a unique family:</p>
+          <p>The price is uniform (eikonal): the metric slope of knowledge <span data-tex="-H"></span> is
+            constant across belief space. Under transport, Fisher information sets the slope of entropy
+            rather than a distance, and uniform pricing then selects one family:</p>
           <div class="formula-center" data-tex="\kappa=\frac{\sqrt J}{\sqrt{2U}}=\text{const}\;\Longleftrightarrow\; U=cJ" data-display="1"></div>
         </div>
       </div>
-      <p class="ladder">The two are a <em>ladder</em>, not independent axioms: <strong>P0</strong> builds the
-        arena and its scalar price; <strong>P1</strong> fixes that price. Thermodynamics motivates both but
-        enters no proof — the results are geometric, in nats.</p>
+      <p class="ladder">The two are ordered: <strong>P0</strong> sets the metric and its scalar price;
+        <strong>P1</strong> fixes that price. Thermodynamics motivates both, but the proofs use only
+        geometry, in nats.</p>
     </section>
 
     <section>
       <h2>The geometry the cost imposes</h2>
-      <p>From the two postulates the geometry is forced. On the location-scale leaf — the
-        <span data-tex="(\mu,\sigma)"></span> plane of the headline figure — it is
-        <strong>hyperbolic</strong>: the cheapest way to change one's mind is a geodesic — open up,
-        traverse, close — not the straight chord, and equal-cost steps crowd toward the boundary. That
-        boundary, certainty <span data-tex="\sigma\to0"></span>, is pushed to <strong>infinite
-        cost-distance</strong> — the boundary <span data-tex="\partial_\infty"></span>.</p>
+      <p>From the two postulates the geometry is fixed. On the location-scale leaf (the
+        <span data-tex="(\mu,\sigma)"></span> plane of the headline figure) it is
+        <strong>hyperbolic</strong>: the cheapest revision is a curved geodesic, not the straight chord,
+        and equal-cost steps crowd toward the boundary. That boundary is certainty
+        (<span data-tex="\sigma\to0"></span>), at infinite cost-distance
+        (<span data-tex="\partial_\infty"></span>).</p>
       <div class="cards-3">
         <div class="res">
           <div class="rk">The boundary</div>
           <h3>Certainty is unreachable</h3>
-          <p>A well-posed inference rejects certainty to infinite cost-distance as soon as the relief dominates Fisher:
+          <p>The cost to reach certainty diverges as <span data-tex="\sigma\to0"></span>:
             <span data-tex="d\ge\sqrt{2c}\,|\Delta H|\!\to\!\infty"></span>.</p>
         </div>
         <div class="res">
           <div class="rk">The Fisher family</div>
           <h3>Uniform pricing ⇔ Fisher</h3>
-          <p>The eikonal price — each nat the same length everywhere — is <em>equivalent</em> to
-            <span data-tex="U=cJ"></span>, the Fisher family. The characterization of Postulate 1.</p>
+          <p>Uniform pricing (each nat the same length everywhere) is equivalent to
+            <span data-tex="U=cJ"></span>, the Fisher family. This characterizes Postulate 1.</p>
         </div>
         <div class="res">
           <div class="rk">Stam rigidity</div>
-          <h3>The Gaussian is crowned</h3>
-          <p>These geometries are hyperbolic; the Stam bound makes the Gaussian the <em>most</em> hyperbolic
-            location-scale belief: <span data-tex="K=-\tfrac{1}{2cJ_0}=-\tfrac14,\; J_0\ge1"></span>.</p>
+          <h3>The Gaussian is extremal</h3>
+          <p>The Stam bound makes the Gaussian the most negatively curved location-scale belief:
+            <span data-tex="K=-\tfrac{1}{2cJ_0}=-\tfrac14,\; J_0\ge1"></span>.</p>
         </div>
       </div>
-      <p class="closing">All three are invariants of one change of cost unit — a <em>relativity of cost</em>,
-        the value <span data-tex="-\tfrac14"></span> being one image.</p>
+      <p class="closing">All three are invariant under a change of cost unit; the value
+        <span data-tex="-\tfrac14"></span> is one example.</p>
     </section>
 
     <!-- ===== the distance, in four formulas ===== -->
     <section id="formulas">
       <h2>The distance, in four formulas</h2>
-      <p>The postulates fix the geometry; four equations take it from definition to displayed
-        number. Throughout the page the constants are c = 2 and e = 0.</p>
+      <p>Four equations take the geometry from definition to computed number. Throughout, the constants
+        are c = 2 and e = 0.</p>
       <div class="formula-center" data-tex="J(p) = \int \frac{|\nabla p|^2}{p}, \qquad H(p) = -\int p \ln p \tag{1}" data-display="1"></div>
-      <p>The two ingredients: Fisher information J, the sharpness of a density, and differential
-        entropy H, its spread in nats; knowledge is −H. For a Gaussian,
-        <span data-tex="J = 1/\sigma^2"></span>.</p>
+      <p>The two ingredients: Fisher information J (the sharpness of a density) and differential entropy H
+        (its spread in nats); knowledge is −H. For a Gaussian, <span data-tex="J = 1/\sigma^2"></span>.</p>
       <div class="formula-center" data-tex="\ell(\gamma) = \int \sqrt{2\,(e + cJ(\gamma_t))}\;\,|\dot\gamma_t|_{\mathcal W_2}\,dt, \qquad d(A,B) = \inf_{\gamma:\,A\to B} \ell(\gamma) \tag{2}" data-display="1"></div>
-      <p>The cost of a revision. A path of beliefs γ is billed at its transport speed times the
-        local price <span data-tex="\sqrt{2(e+cJ)}"></span>, and the distance from A to B is the
-        cheapest bill, in nats.</p>
+      <p>The cost of a revision. A path of beliefs γ has a cost equal to its transport speed times the
+        local price <span data-tex="\sqrt{2(e+cJ)}"></span>, integrated; the distance from A to B is the
+        smallest such cost, in nats.</p>
       <div class="formula-center" data-tex="\tilde g \;=\; \frac{4}{\sigma^2}\,\bigl(d\mu^2 + d\sigma^2\bigr) \tag{3}" data-display="1"></div>
-      <p>The cost metric on the Gaussian leaf. On this leaf the transport metric is itself <em>flat</em>
-        — the <span data-tex="\mathcal W_2"></span> distance between two Gaussians is just the Euclidean
-        distance in <span data-tex="(\mu,\sigma)"></span>, so
-        <span data-tex="g_{\mathcal W_2} = d\mu^2 + d\sigma^2"></span> — and with
-        <span data-tex="J = 1/\sigma^2"></span> the local price <span data-tex="2(e+cJ)"></span> becomes
-        <span data-tex="4/\sigma^2"></span>: the Poincaré half-plane with every length doubled. A step
-        costs 2/σ nats per metre, a price that doubles each time σ halves — the tariff map painted
-        behind the figures.</p>
+      <p>The cost metric on the Gaussian leaf. Here the transport metric is flat: the
+        <span data-tex="\mathcal W_2"></span> distance between two Gaussians is the Euclidean distance in
+        <span data-tex="(\mu,\sigma)"></span>, so <span data-tex="g_{\mathcal W_2} = d\mu^2 + d\sigma^2"></span>.
+        With <span data-tex="J = 1/\sigma^2"></span>, the local price <span data-tex="2(e+cJ)"></span>
+        becomes <span data-tex="4/\sigma^2"></span>: the Poincaré half-plane with every length doubled. A
+        step costs 2/σ nats per metre, which doubles each time σ halves (the cost-per-step shading behind
+        the figures).</p>
       <div class="formula-center" data-tex="d(A,B) \;=\; 2\,\operatorname{arcosh}\!\left(1 + \frac{(\mu_1-\mu_0)^2 + (\sigma_1-\sigma_0)^2}{2\,\sigma_0\,\sigma_1}\right) \tag{4}" data-display="1"></div>
-      <p>The distance between two Gaussian beliefs <span data-tex="A = (\mu_0, \sigma_0)"></span>
-        and <span data-tex="B = (\mu_1, \sigma_1)"></span>: the classical half-plane distance,
-        integrated along the geodesic. The meters of the worked example below price each
-        revision with this formula — once for a revision in one go, leg by leg for the drip-fed
-        bill; the chord meter bills the straight segment by the length element of eq. 3.</p>
+      <p>The distance between two Gaussian beliefs <span data-tex="A = (\mu_0, \sigma_0)"></span> and
+        <span data-tex="B = (\mu_1, \sigma_1)"></span>: the standard half-plane distance along the geodesic.
+        The worked example below uses this formula for each revision (in one go, and one sensor at a time);
+        the chord cost uses the length element of eq. 3 along the straight segment.</p>
+      <div class="keybox">
+        <p><strong>Why the distance is measured in nats.</strong> On the Fisher family
+          (<span data-tex="e=0"></span>, <span data-tex="U=cJ"></span>) the metric does not depend on the
+          unit chosen for the state. Rescale and shift the height axis,
+          <span data-tex="x\mapsto a\,x+x_0"></span> with <span data-tex="a>0"></span>: the transport
+          distance scales by <span data-tex="a"></span> (optimal transport carries the state's length),
+          while the Fisher information scales by <span data-tex="1/a^2"></span>, so the local price
+          <span data-tex="\sqrt{2cJ}"></span> scales by <span data-tex="1/a"></span>. In the length
+          <span data-tex="\ell=\int \sqrt{2cJ}\;|\dot\gamma|_{\mathcal W_2}\,dt"></span> the factor
+          <span data-tex="a"></span> from transport and the <span data-tex="1/a"></span> from Fisher
+          cancel, so every distance is unchanged. Concretely, eq. 4 depends only on the dimensionless
+          ratio
+          <span data-tex="\bigl((\mu_1-\mu_0)^2+(\sigma_1-\sigma_0)^2\bigr)/(\sigma_0\sigma_1)"></span>,
+          invariant under <span data-tex="x\mapsto a\,x+x_0"></span>. The units of optimal transport and
+          of Fisher information cancel, leaving a metric with no dimension: distances are pure
+          information, in nats. The cancellation holds precisely at the exponent
+          <span data-tex="\alpha=1"></span> in <span data-tex="U=cJ^\alpha"></span>, which is also the
+          exponent uniform pricing selects.</p>
+      </div>
     </section>
 
     <!-- ===== A worked example: the digital twin of a field ===== -->
     <section id="digital-twin">
       <h2>A worked example: the digital twin of a field</h2>
-      <p>One concrete inference, end to end: a fixed field, a fixed set of noisy sensors, a kriging
-        belief, and the price of each revision. Every displayed number is computed in the browser,
-        from the kriging formulas below and eqs. 1–4 above.</p>
+      <p>One concrete inference, end to end: a fixed field, a fixed set of noisy sensors, a kriging belief,
+        and the cost of each revision. Every displayed number is computed in the browser, from the kriging
+        formulas below and eqs. 1–4 above.</p>
 
       <h3>The problem</h3>
       <p>A field C carries a vegetation height h(x). n point sensors at positions
@@ -224,154 +238,114 @@
         <span data-tex="h_i = h(x_i)+\varepsilon_i"></span> with known Gaussian noise
         <span data-tex="\varepsilon_i \sim \mathcal N(0, s_i^2)"></span>. The likelihood of a candidate
         field is <span data-tex="\textstyle\prod_i \mathcal N(h_i;\,h(x_i), s_i^2)"></span>; it constrains h at
-        the n sensor sites. A <em>belief</em> in the sense above is a proper probability distribution
-        over the whole field, so the setup is completed by a spatial prior — the standard choice in
-        geostatistics, a Gaussian process <span data-tex="h \sim \mathrm{GP}(\mu_0, k)"></span> with
-        squared-exponential kernel <span data-tex="k(x,x') = a^2 e^{-(x-x')^2/2\ell^2}"></span>
-        (amplitude a, correlation range ℓ). With Gaussian noise the posterior is Gaussian and carries
-        a classical name: <em>kriging</em>. Writing K for the kernel matrix at the sensors,
-        <span data-tex="D=\mathrm{diag}(s_i^2)"></span>, and <span data-tex="k_*(x)"></span> for the
-        kernel vector between x and the sensors,</p>
+        the n sensor sites. A belief in the sense above is a probability distribution over the whole field,
+        so the setup is completed by a spatial prior (the standard geostatistics choice): a Gaussian
+        process <span data-tex="h \sim \mathrm{GP}(\mu_0, k)"></span> with squared-exponential kernel
+        <span data-tex="k(x,x') = a^2 e^{-(x-x')^2/2\ell^2}"></span> (amplitude a, correlation range ℓ).
+        With Gaussian noise the posterior is Gaussian, called kriging. Writing K for the kernel matrix at
+        the sensors, <span data-tex="D=\mathrm{diag}(s_i^2)"></span>, and <span data-tex="k_*(x)"></span>
+        for the kernel vector between x and the sensors,</p>
       <div class="formula-center" data-tex="m(x) = \mu_0 + k_*(x)^{\!\top}(K+D)^{-1}(\mathbf h-\mu_0\mathbf 1),
         \qquad \sigma^2(x) = k(x,x) - k_*(x)^{\!\top}(K+D)^{-1}k_*(x)" data-display="1"></div>
-      <p>The belief is this Gaussian posterior: the map m(x), its width σ(x), and the covariances
-        between locations. Read at one location x₀ it marginalizes to a scalar Gaussian
-        <span data-tex="\mathcal N(\mu,\sigma^2)"></span> — one point of the (μ, σ) half-plane of the
-        headline figure, where eqs. 3 and 4 apply exactly. Two standard kriging facts
-        carry the lessons below: given the kernel, the variance σ²(x) depends only on the sensor
-        positions and noise levels — the measured values enter the mean alone — and it decreases,
-        weakly, as sensors are added.</p>
+      <p>The belief is this Gaussian posterior. Read at one location x₀, it is a scalar Gaussian
+        <span data-tex="\mathcal N(\mu,\sigma^2)"></span>, one point of the
+        <span data-tex="(\mu,\sigma)"></span> half-plane, where eqs. 3 and 4 apply. Two standard kriging
+        facts matter below: given the kernel, the variance σ²(x) depends only on the sensor positions and
+        noise levels (the measured values enter the mean alone), and it decreases weakly as sensors are
+        added.</p>
 
       <h3>The figure, step by step</h3>
-      <div class="fig"><div data-fig="dt" role="img" aria-label="Interactive figure: the digital twin of a field. Left, a field with its kriging belief and sensors; right, the belief about the height at a chosen location x0 as a point in the (mu, sigma) half-plane, with two routes — a curved geodesic and a straight chord — whose length is the revision cost in nats."></div></div>
+      <div class="fig"><div data-fig="dt" role="img" aria-label="Interactive figure: the digital twin of a field. Left, a field with its kriging belief and sensors; right, the belief about the height at a chosen location x0 as a point in the (mu, sigma) half-plane, with two routes (a curved geodesic and a straight chord) whose length is the revision cost in nats."></div></div>
       <p class="caption"><b>The digital twin of a field.</b> Left: the field and its kriging belief.
-        Right: the belief space of the readout at x₀ — the (μ, σ) half-plane, with height in metres on
-        the horizontal axis. Two tabs select the regime, <em>Learn (n)</em> and
-        <em>Revise (two campaigns)</em>; the panels carry their own titles, gridlines and in-panel
-        legends.</p>
-      <ul>
-        <li><b>Left panel — the field.</b> The blue curve is the kriging mean m(x); the blue band is
-          m(x) ± 2σ(x). The dotted vertical line is the readout location x₀: drag it on the panel, or
-          use the x₀ slider; the orange bar on it spans the readout belief μ ± 2σ. In the Learn tab,
-          thin violet curves show three sample fields drawn from the posterior — three complete fields
-          the belief holds possible; filled orange dots are the sensors the belief has read, with
-          their ±s error bars, and hollow dots are the rest of the pool. All 40 sensors and their
-          readings exist from the start; the n slider selects a subset. The s and ℓ sliders set the
-          sensor noise and the prior range; “Another dataset” redraws the sensor noise — same sites,
-          same field, fresh readings. The toggle reveals h★, the real field, fixed throughout.</li>
-        <li><b>Right panel — belief space.</b> Each point is a scalar belief
-          <span data-tex="\mathcal N(\mu,\sigma^2)"></span> about the height at x₀. The bold line
-          σ = 0 is certainty; it sits at infinite cost-distance. The violet background is the tariff
-          map: one band down, the price per step doubles (×2, ×4, ×8 marks), and each band has the
-          same thickness in cost, 2 ln 2 nats — the boundary is an infinite stack of them. The local
-          price of moving the mean is <span data-tex="\sqrt{2cJ} = 2/\sigma"></span> per metre
-          (eq. 3; c = 2 and e = 0 throughout). Beads ●
-          mark one nat of cost each along the violet and blue routes — one bead per two nats on
-          routes past 20.</li>
-        <li><b>Learn (n) tab.</b> The photos are the posteriors after k = 0, 1, …, 40 sensors under
-          one sensor order; photo 0 is the prior. The orange thread joins them end to end — solid up
-          to the current n (the paid part), faint beyond — and carries one photo dot per sensor. The
-          violet arc is the geodesic from photo 0 (or the pinned A) to photo n: the same revision in
-          one go. The meters read σ(x₀), the cost of the last step, the drip-fed total with its ratio,
-          the direct revision in one go, and the whole-field information Σₖ J(xₖ) — the field's total
-          sharpness summed over locations across the field, not over the sensors, which climbs as the
-          belief tightens. Rings mark
-          n = 5, 10, 20, 40: each doubling of the evidence costs a step of the same order (in the
-          i.i.d. limit, exactly ½ ln 2 nat of entropy). “Shuffle the order” permutes the sensors: the
-          thread rearranges, photo 0 and photo 40 hold still — the order is a gauge; set n = 40 to
-          watch the direct-revision meter hold still too. “Pin photo A” pins the current photo as
-          endpoint A: the arc and the meter then run from A, and the meter reads d(A→B) = d(B→A) —
-          the distance is symmetric. The pin follows x₀ as you drag; changing s, ℓ, the order or the
-          dataset releases it.</li>
-        <li><b>Revise (two campaigns) tab.</b> Two campaigns survey the same field at the same time;
-          campaign 2 carries a declared calibration offset of +0.45 m. Kriging gives both campaigns
-          the same width σ — the variance reads the sensor geometry alone — with readings 0.45 m
-          apart and kriging means ≈ 0.44 m apart at x₀: two confident beliefs about h(x₀) that
-          disagree. The left panel shows campaign 1's band and mean, campaign 2's mean as a dashed
-          violet curve, all 40 sensors read, and the two labelled belief bars at x₀. On the right
-          panel the beliefs are the endpoints A (campaign 2, violet) and B (campaign 1, blue); both
-          routes run from A to B. The solid violet curve is the cheapest revision between them on the
-          Gaussian leaf: it opens up (σ rises — the apex is marked “open up”), traverses, and
-          re-tightens. The dashed blue segment is the W₂ chord: the straight route in (μ, σ), which
-          for Gaussians is the optimal-transport (McCann) interpolation — the bell slides sideways,
-          keeping its width. Count the beads: with the default settings the geodesic carries 6 and
-          the chord 10; the meters read 6.61 and 10.05 nats, a saving of 34 %. With equal widths
-          the two meters are one-line checks: the geodesic meter is eq. 4 with Δσ = 0,
-          <span data-tex="2\operatorname{arcosh}\!\bigl(1 + \tfrac{\Delta\mu^2}{2\sigma^2}\bigr) = 6.61"></span>,
-          and the chord meter is eq. 3 along the horizontal segment,
-          <span data-tex="2\,|\Delta\mu|/\sigma = 10.05"></span>, with
-          Δμ = 0.445 m and σ = 0.0886 m at the defaults. The entropy floor
-          <span data-tex="\sqrt{2c}\,|\Delta H|"></span> reads 0.00 here — the two beliefs have equal
-          width — while the revision costs ≈ 6.6 nats: cost is a length, and entropy change is one
-          component of it.</li>
-        <li><b>The “budget spent b” slider (Revise tab).</b> b is an amount of nats, spent equally on
-          both routes; scrub it in both directions, the same states replay. From b &gt; 0, one
-          traveler — a white disc rimmed in its route's colour — sits on each route at spend b, and
-          the “equal spend, remaining” meter shows what each traveler still owes (✓ 0 on arrival): at
-          b = 6.61 the geodesic traveler stands on B and the chord traveler still owes 3.44 nats. The
-          same slider draws, at x₀, the two intermediate beliefs as sideways bells — the violet one
-          widens then re-tightens, the blue one stays narrow — and, on wide screens, frames the
-          current still in the contact sheet below the panels: one intermediate belief per nat of
-          route, 8 stills for the geodesic against 12 for the chord, each row stating its count and
-          total. The cheap route spends its nats opening up, and needs fewer of them.</li>
-      </ul>
+        Right: the belief space of the readout at x₀, the (μ, σ) half-plane, with height in metres on the
+        horizontal axis. Two tabs select the regime, <em>Learn (n)</em> and
+        <em>Revise (two campaigns)</em>; each panel carries its own title, gridlines and legend.</p>
+      <div class="legend-list">
+        <details class="legend">
+          <summary>Left panel: the field</summary>
+          <p>The blue curve is the kriging mean m(x); the blue band is m(x) ± 2σ(x). The dotted vertical
+          line is the readout location x₀ (drag it, or use the x₀ slider); the orange bar there spans
+          μ ± 2σ. In the Learn tab, thin violet curves are three sample fields drawn from the posterior.
+          Filled orange dots are the sensors read; hollow dots are the unread pool (40 in all; the
+          n slider selects a subset). The s and ℓ sliders set the sensor noise and the prior range;
+          “Another dataset” redraws the noise. The toggle shows h★, the true field.</p>
+        </details>
+        <details class="legend">
+          <summary>Right panel: belief space</summary>
+          <p>Each point is a scalar belief <span data-tex="\mathcal N(\mu,\sigma^2)"></span> about the
+          height at x₀. The bold line σ = 0 is certainty, at infinite cost-distance. The violet shading is
+          the cost map: each band down doubles the price per step (×2, ×4, ×8), and every band has the same
+          cost thickness, 2 ln 2 nats. The local price of moving the mean is
+          <span data-tex="\sqrt{2cJ} = 2/\sigma"></span> per metre. Markers show one nat of cost each along
+          both routes (one per two nats on routes past 20).</p>
+        </details>
+        <details class="legend">
+          <summary>Learn (n) tab</summary>
+          <p>The posteriors after k = 0, 1, …, 40 sensors (posterior 0 is the prior) are joined by the
+          orange polyline, solid up to the current n and faint beyond. The violet arc is the geodesic from
+          posterior 0 (or the pinned A) to posterior n. The readouts give σ(x₀), the last step's cost, the
+          step-by-step total with its ratio, the direct revision, and the whole-field information
+          Σₖ J(xₖ) (the total sharpness summed over field locations, which rises as the belief tightens).
+          Rings mark n = 5, 10, 20, 40: each doubling of the evidence costs a step of similar length (in
+          the i.i.d. limit, exactly ½ ln 2 nat). “Shuffle the order” permutes the sensors; posterior 0 and
+          posterior 40 hold still, since the order is a gauge. “Pin posterior A” sets the arc's start to
+          the current posterior, and the readout then shows d(A→B) = d(B→A).</p>
+        </details>
+        <details class="legend">
+          <summary>Revise (two campaigns) tab</summary>
+          <p>Two campaigns survey the same field; campaign 2 has a declared calibration offset of +0.45 m.
+          Kriging gives both the same width σ (the variance reads the sensor geometry alone), with readings
+          0.45 m apart and means ≈ 0.44 m apart at x₀: two confident beliefs that disagree. On the right
+          panel the endpoints are A (campaign 2, violet) and B (campaign 1, blue). The solid violet curve
+          is the cheapest revision on the Gaussian leaf: it widens (σ rises), traverses, then re-narrows.
+          The dashed blue segment is the W₂ chord, the straight route in (μ, σ), which for Gaussians is the
+          optimal-transport (McCann) interpolation: the Gaussian slides sideways at fixed width. At the
+          defaults the geodesic costs
+          <span data-tex="2\operatorname{arcosh}\!\bigl(1 + \tfrac{\Delta\mu^2}{2\sigma^2}\bigr) = 6.61"></span>
+          nats and the chord <span data-tex="2\,|\Delta\mu|/\sigma = 10.05"></span> nats
+          (Δμ = 0.445 m, σ = 0.0886 m), a saving of 34 %. The entropy floor
+          <span data-tex="\sqrt{2c}\,|\Delta H|"></span> is 0.00 here (equal widths), yet the revision
+          still costs ≈ 6.6 nats: cost is a length, and entropy change is one part of it.</p>
+        </details>
+        <details class="legend">
+          <summary>The “budget spent b” slider (Revise tab)</summary>
+          <p>b is a number of nats, spent equally on both routes; scrub it in either direction. For
+          b &gt; 0, a traveler sits on each route at spend b, and the “remaining” readout shows what each
+          still owes (0 on arrival): at b = 6.61 the geodesic traveler has arrived while the chord traveler
+          owes 3.44 nats. The same slider draws the two intermediate beliefs at x₀ as sideways Gaussians
+          (violet widening then re-narrowing, blue staying narrow) and, on wide screens, highlights the
+          current snapshot in the strip below: one belief per nat, 8 snapshots for the geodesic against 12
+          for the chord. The cheaper route spends its nats widening, and needs fewer.</p>
+        </details>
+      </div>
 
       <h3>Interpretation</h3>
-      <p><b>Certainty is a boundary at infinite cost-distance.</b> With the default settings, σ(x₀)
-        falls from 0.65 m (the prior) to ≈ 0.09 m at n = 40. The floor
-        <span data-tex="d \ge \sqrt{2c}\,|\Delta H|"></span> diverges as σ → 0: reaching σ = 0 costs
-        an infinite length, in every dimension. Every belief the agent can reach keeps a positive
-        width and stays revisable.</p>
+      <p><b>Certainty is a boundary at infinite cost-distance.</b> At the defaults, σ(x₀) falls from
+        0.65 m (the prior) to ≈ 0.09 m at n = 40. The floor
+        <span data-tex="d \ge \sqrt{2c}\,|\Delta H|"></span> diverges as σ → 0, so reaching σ = 0 costs
+        infinite length. Every reachable belief keeps a positive width.</p>
       <p><b>Every nat has one price.</b> In the i.i.d. slice at x₀
-        (<span data-tex="\sigma^2 \approx s^2/n"></span>), doubling the evidence divides the variance
-        by two and lowers the entropy by exactly ½ ln 2 nat, at a near-constant step of length. The
-        kriging figure sits below this ideal — correlated sensors are partly redundant — and at the
-        defaults each doubling n = 5 → 10 → 20 → 40 lowers the entropy by ≈ 0.2–0.3 nat, approaching
-        ½ ln 2 as the coverage densifies. In cost coordinates the statistical rate
-        <span data-tex="\sigma \sim n^{-1/2}"></span> becomes
-        <span data-tex="\sigma \approx \sigma_0\, e^{-d/\sqrt{2c}}"></span> (eq. 3, integrated
-        along the σ axis): a fixed marginal price per unit of distance.</p>
-      <p><b>Drip-fed and in-one-go end at the same belief and pay different bills.</b> Bayes reaches
-        the same posterior through every ordering and grouping of the data; the bills differ. With
-        all 40 sensors, the one-sensor updates end to end typically total two to three times the
-        direct revision — the ratio grows with n, and sits around one and a half at the default
-        n = 8. Each leg is billed at its own two-point distance (eq. 4); the sum pays the noise zigzag and
-        the early tightening (moving the mean costs 2/σ per metre: ≈ 3 nats at σ = 0.65, ≈ 22 at
-        σ = 0.09). This is the triangle inequality, read as accounting. The Revise tab isolates the
-        complementary fact: a revision with ΔH = 0 still costs ≈ 6.6 nats, and the cheapest way to
-        pay it opens up first.</p>
-
-      <h3>In an algorithm</h3>
-      <p>The intermediate positions along a route have a direct operational reading, and it depends
-        on the kind of algorithm.</p>
-      <p><b>An algorithm that jumps</b> — conjugate Bayes, one closed-form update — goes from A to B
-        in one assignment. For it, the geodesic is the surveyor's tape of the jump: the distance
-        stays defined the way the Paris–Lyon distance stays defined for a traveler who flies. The
-        intermediate points are the milestones of the reference route.</p>
-      <p><b>An algorithm that iterates</b> — variational inference, a Kalman filter, SGD on the
-        parameters of a Gaussian posterior, simulated annealing — holds a state
-        <span data-tex="(\mu_t,\sigma_t)"></span> at every step. That sequence is a path in the
-        half-plane; its billed length is at least d(A,B), and the ratio of the two measures the
-        efficiency of the update schedule. The opening of the optimal route has one concrete name per
-        family: the <em>predict</em> step of a Kalman filter (the covariance inflates before the
-        measurement moves the mean); the high-temperature phase of simulated annealing; the
-        learning-rate warm-up of SGD; the loosened Fisher penalty of continual learning (EWC),
-        followed by re-consolidation.</p>
-      <p>The midpoint of the optimal route is the maximally agnostic state of the trip: at the apex,
-        the old mean and the new mean each sit within about one σ of the belief. The division of
-        labour is clean — the geometry prices every path and identifies the cheapest; the algorithm
-        supplies the schedule that walks one of them, on its own internal clock. The field stays
-        fixed throughout.</p>
+        (<span data-tex="\sigma^2 \approx s^2/n"></span>), doubling the evidence halves the variance and
+        lowers the entropy by exactly ½ ln 2 nat, at a near-constant length. Kriging sits below this ideal
+        (correlated sensors are partly redundant): each doubling n = 5 → 10 → 20 → 40 lowers the entropy by
+        ≈ 0.2–0.3 nat. In cost coordinates the rate <span data-tex="\sigma \sim n^{-1/2}"></span> becomes
+        <span data-tex="\sigma \approx \sigma_0\, e^{-d/\sqrt{2c}}"></span>: a fixed price per unit
+        distance.</p>
+      <p><b>Adding data one sensor at a time costs more than one update.</b> Bayes reaches the same
+        posterior through any grouping of the data, but the costs differ: the one-sensor updates total two
+        to three times the direct revision at n = 40, and about one and a half at the default n = 8 (the
+        ratio grows with n). This is the triangle inequality (moving the mean costs 2/σ per metre: ≈ 3 nats
+        at σ = 0.65 m, ≈ 22 at σ = 0.09 m). The Revise tab isolates the complementary fact: a revision with ΔH = 0 still
+        costs ≈ 6.6 nats, and the cheapest way to pay it widens the belief first.</p>
 
       <h3>Scope</h3>
-      <p>The right panel is the scalar slice at x₀: every linear readout of the field (the height at
-        a point, the mean over a plot) has a scalar Gaussian posterior and lives on the Gaussian
-        leaf, where each displayed quantity is a closed form from the paper. For the full field
-        posterior <span data-tex="\mathcal N(m,\Sigma)"></span>, the boundary at infinite
-        cost-distance and the entropy floor hold in every dimension. The curvature value
-        <span data-tex="K=-1/(2cJ_0)"></span> and the Stam statement are results on the
-        two-dimensional location-scale leaf; the curvature of the full field posterior is
-        Conjecture C2, open.</p>
+      <p>The right panel is the scalar slice at x₀. Every linear readout of the field (a height at a point,
+        a mean over a plot) has a scalar Gaussian posterior on the Gaussian leaf, where each displayed
+        quantity is a closed form from the paper. For the full field posterior
+        <span data-tex="\mathcal N(m,\Sigma)"></span>, the boundary at infinite cost-distance and the
+        entropy floor hold in every dimension. The curvature <span data-tex="K=-1/(2cJ_0)"></span> and the
+        Stam statement are results on the two-dimensional location-scale leaf; the curvature of the full
+        field posterior is open (Conjecture C2).</p>
     </section>
 
     <section>

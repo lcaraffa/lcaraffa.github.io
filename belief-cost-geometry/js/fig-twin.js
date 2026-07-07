@@ -23,7 +23,7 @@ export function mountTwin(root) {
   drawPool();
 
   const cv = el('canvas', { height: 360, tabindex: '0',
-    'aria-label': 'A hidden state, a noisy sensor, the observations, and the belief that forms — a density, never a point.' });
+    'aria-label': 'A hidden state, a noisy sensor, the observations, and the belief that forms: a density that keeps a positive width.' });
   const stage = el('div', { class: 'stage' }, [cv]);
   root.appendChild(stage);
 
@@ -69,7 +69,7 @@ export function mountTwin(root) {
     // headings
     texte(ctx, 'the world · hidden state x★', x0, 14, C.encre2, 11, 'left', false);
     texte(ctx, 'noisy sensor  Q(y∣x)', x0 + w, 14, C.energie, 11, 'right', false);
-    texte(ctx, 'the belief — Bayes posterior  p(x∣y₁…ₙ)', x0, 30, C.soudure, 11.5, 'left', false);
+    texte(ctx, 'the belief (Bayes posterior)  p(x∣y₁…ₙ)', x0, 30, C.soudure, 11.5, 'left', false);
 
     // x* vertical
     ctx.strokeStyle = C.encre; ctx.lineWidth = 1.4;
@@ -96,7 +96,7 @@ export function mountTwin(root) {
     ctx.beginPath(); ctx.moveTo(xs - 4, dy + 3); ctx.lineTo(xs, dy); ctx.lineTo(xs + 4, dy + 3); ctx.stroke();
     ctx.strokeStyle = C.energie; ctx.lineWidth = 2; // the bar across it
     ctx.beginPath(); ctx.moveTo(xs - 13, dy + 22); ctx.lineTo(xs + 13, dy - 2); ctx.stroke();
-    texte(ctx, 'the perfect twin (Dirac) — excluded', xs + 10, dy + 4, C.encre2, 9.5, 'left', false);
+    texte(ctx, 'point mass (Dirac): excluded', xs + 10, dy + 4, C.encre2, 9.5, 'left', false);
 
     // axis + sample rug
     ctx.strokeStyle = C.filet; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, axisY); ctx.lineTo(x0 + w, axisY); ctx.stroke();
@@ -111,7 +111,7 @@ export function mountTwin(root) {
     const crFloor = Math.sqrt(PHYS.crFloorVar(sobs, n));   // sigma_obs / sqrt(n)
 
     // denial 1 — observation (Cramer-Rao)
-    texte(ctx, 'denial 1 · observation  (Cramér–Rao)', x0, barTop + 18, C.info, 11.5, 'left', false);
+    texte(ctx, 'limit 1 · observation  (Cramér–Rao)', x0, barTop + 18, C.info, 11.5, 'left', false);
     const gx0 = x0 + 6, gw = colW - 30, trackY = barTop + 40;
     const sc = v => clamp(v / TAU0, 0, 1) * gw;
     ctx.fillStyle = C.grille; ctx.fillRect(gx0, trackY, gw, 12);
@@ -124,14 +124,14 @@ export function mountTwin(root) {
 
     // denial 2 — physics (Landauer)
     const x2 = x0 + colW + 10;
-    texte(ctx, 'denial 2 · physics  (Landauer)', x2, barTop + 18, C.energie, 11.5, 'left', false);
-    texte(ctx, 'pinning the belief costs ≥ kʙT per nat', x2, barTop + 38, C.encre2, 9.5, 'left', false);
+    texte(ctx, 'limit 2 · physics  (Landauer)', x2, barTop + 18, C.energie, 11.5, 'left', false);
+    texte(ctx, 'reaching certainty costs ≥ kʙT per nat', x2, barTop + 38, C.encre2, 9.5, 'left', false);
     const epn = PHYS.kBT(300) / 1e-21;
     texte(ctx, '≥ ' + epn.toFixed(1) + ' zJ / nat   (T = 300 K)', x2, barTop + 54, C.energie, 10.5, 'left', false);
     texte(ctx, 'certainty ⇒ infinite energy', x2, barTop + 70, C.energie, 9.5, 'left', false);
 
     // the one constraint
-    texte(ctx, 'one constraint, read twice:  J = 1/σ²', x0 + w / 2, Hp - 7, C.soudure, 11.5, 'center', false);
+    texte(ctx, 'both limits read one quantity:  J = 1/σ²', x0 + w / 2, Hp - 7, C.soudure, 11.5, 'center', false);
 
     mS.val.textContent = fmt(sn); mH.val.textContent = fmt(PHYS.H(sn)) + ' nat'; mJ.val.textContent = fmt(PHYS.J(sn));
     rN.val.textContent = 'n = ' + n; rS.val.textContent = 'σₒ = ' + fmt(sobs);
