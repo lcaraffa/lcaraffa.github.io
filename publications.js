@@ -14,6 +14,14 @@ const PUBLICATIONS = [
     links: { page: "belief-cost-geometry/", arxiv: "https://arxiv.org/abs/2606.21585", pdf: "https://arxiv.org/pdf/2606.21585" },
   },
   {
+    title: "SEM-ROVER: Semantic Voxel-Guided Diffusion for Large-Scale Driving Scene Generation",
+    authors: "H. Dahmani, N. Piasco, M. Bennehar, L. Roldão, D. Tsishkou, L. Caraffa, J-P. Tarel, R. Brémond",
+    venue: "ECCV",
+    year: 2026,
+    image: "assets/pub/sem-rover.jpg",
+    links: { page: "https://dahmanihiba.github.io/SEM-ROVER/", arxiv: "https://arxiv.org/abs/2604.06113", pdf: "https://media.eventhosts.cc/Conferences/ECCV2026/pdfs/9513.pdf" },
+  },
+  {
     title: "Fused-Planes: Why Train a Thousand Tri-Planes When You Can Share?",
     authors: "K. Kassab*, A. Schnepf*, J-Y. Franceschi, L. Caraffa, F. Vasile, J. Mary, A. Comport**, V. Gouet-Brunet**",
     venue: "ICLR",
